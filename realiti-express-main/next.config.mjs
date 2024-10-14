@@ -4,7 +4,7 @@ const nextConfig = {
     images: {
         // Unsplash
     
-        domains: ['localhost', 'images.unsplash.com', 'realitiexpress.com', 'realiti-express.vercel.app'],
+        domains: ['localhost', 'images.unsplash.com', 'realitiexpress.com', 'realiti-express.vercel.app', 'via.placeholder.com'],
     },
     eslint: {
         ignoreDuringBuilds: true,
