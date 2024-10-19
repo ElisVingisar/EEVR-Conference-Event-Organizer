@@ -12,7 +12,7 @@ model User {
   email    String  @unique
   password String
   name     String?
-  form     SpeakerForm?
+  form     SpeakerForm? 
 }
 
 model SpeakerForm {
