@@ -36,10 +36,10 @@ jobs:
             ~/.npm
             ${{ github.workspace }}/.next/cache
           # Use package-lock.json and source files to create a unique cache key
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('realiti-express-main/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('reality-express-main/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           # Restore keys if source files change but dependencies remain the same
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('realiti-express-main/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('reality-express-main/package-lock.json') }}-
 
       # Step 4: Install dependencies using npm ci
       - name: Install dependencies
