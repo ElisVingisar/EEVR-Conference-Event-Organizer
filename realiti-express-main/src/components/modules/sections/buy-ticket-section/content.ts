@@ -39,6 +39,7 @@ export type TicketOption = {
 }
 
 export type BuyTicketContent = {
+    [x: string]: any;
     title: string;
     ticketUrl: string;
     ticketOptions: TicketOption[];

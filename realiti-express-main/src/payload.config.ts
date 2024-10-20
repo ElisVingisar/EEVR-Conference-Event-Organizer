@@ -3,7 +3,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
 import sharp from 'sharp'
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload/config'
 import { fileURLToPath } from 'url'
 
 import { Users } from './payload/collections/Users'
@@ -37,14 +37,14 @@ export default buildConfig({
     CTASection,
     EventTeacksSection,
     FeaturesSection,
-    // HeroSection,
+    HeroSection,
     PartnersSection,
     SpeakersSection,
     VisitorInfoSection,
     WhyTallinnSection
   ],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  // secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -54,7 +54,7 @@ export default buildConfig({
     },
   }),
 
-  sharp,
+  // sharp,
 
   plugins: [
     vercelBlobStorage({
