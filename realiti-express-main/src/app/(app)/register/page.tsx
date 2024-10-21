@@ -4,7 +4,7 @@ import { Section } from '@/components/reusable/section/Section';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +22,8 @@ const RegisterPage = () => {
     accessibilityNeeds: '',
     specialRequests: '',
   });
+
+  const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -43,6 +45,8 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
+
+    setSubmissionStatus(null);
 
     // Prepare form data for submission
     const data = new FormData();
@@ -79,21 +83,33 @@ const RegisterPage = () => {
         method: 'POST',
         body: data, // Send form data
       });
-      
-      const responseText = await response.text();
-      console.log('Raw response:', responseText);
+    
 
-      
       if (response.ok) {
-        const responseData = await response.json();
-        console.log('Speaker registered:', responseData);
+        const responseData = await response.json();  // Now we read the response body
+        if (responseData.success) {
+          setSubmissionStatus('success');
+          console.log('Form submission successful!');
+        } else {
+          setSubmissionStatus('error');
+          console.error('Form submission failed.');
+        }
       } else {
-        console.error('Failed to register speaker');
+        setSubmissionStatus('error');
+        console.error('Failed to submit the form:', response.statusText);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+    }  finally {
+      console.log(`Setting submission status: ${submissionStatus}`);
     }
   };
+
+  useEffect(() => {
+    if (submissionStatus) {
+      console.log(`Submission status updated: ${submissionStatus}`);
+    }
+  }, [submissionStatus]);
 
   return (
     <div className="w-full">
@@ -221,9 +237,19 @@ const RegisterPage = () => {
               <textarea id="specialRequests" name="specialRequests" rows={4} className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange}></textarea>
             </div>
 
-            <Button type="submit" className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900'>
-              Register
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900">
+                Register
+              </Button>
+
+              {/* Conditionally Render the Success/Error Message */}
+              {submissionStatus === 'success' && (
+                <p className="text-green-600 mt-8">Form submission successful!</p>
+              )}
+              {submissionStatus === 'error' && (
+                <p className="text-red-600 mt-8">Form submission failed. Please try again.</p>
+              )}
+            </div>
           </form>
           <Button className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900' asChild>
             <Link href='/'>
