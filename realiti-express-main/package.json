@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "ci": "payload migrate && pnpm build",
@@ -15,10 +15,11 @@
   "dependencies": {
     "@next/third-parties": "^14.2.5",
     "@payloadcms/db-postgres": "3.0.0-beta.58",
-    "@payloadcms/next": "3.0.0-beta.58",
+    "@payloadcms/next": "^3.0.0-beta.29",
     "@payloadcms/plugin-cloud-storage": "3.0.0-beta.58",
-    "@payloadcms/richtext-lexical": "3.0.0-beta.58",
+    "@payloadcms/richtext-lexical": "^0.11.4",
     "@payloadcms/storage-vercel-blob": "3.0.0-beta.58",
+    "@prisma/client": "^5.21.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
@@ -34,13 +35,15 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
+    "formidable": "^3.5.2",
     "framer-motion": "^11.3.5",
     "graphql": "^16.9.0",
     "ics": "^3.7.6",
     "lucide-react": "^0.408.0",
     "meshline": "^3.1.6",
-    "next": "^14.2.5",
-    "payload": "^3.0.0-beta.58",
+    "next": "^14.2.15",
+    "payload": "^2.30.3",
+    "pnpm": "^9.12.2",
     "postprocessing": "^6.35.4",
     "react": "^18",
     "react-dom": "^18",
@@ -48,6 +51,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.166.1",
+    "tspath": "^2.6.8",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -59,8 +63,9 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8",
+    "prisma": "^5.21.1",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5.6.3"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

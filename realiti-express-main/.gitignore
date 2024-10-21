@@ -2,6 +2,9 @@
 
 .env
 
+public/uploads/*
+!public/uploads/.gitkeep
+
 # dependencies
 /node_modules
 /.pnp
