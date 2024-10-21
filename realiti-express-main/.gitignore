@@ -2,8 +2,8 @@
 
 .env
 
-uploads/*
-!uploads/
+public/uploads/*
+!public/uploads/.gitkeep
 
 # dependencies
 /node_modules

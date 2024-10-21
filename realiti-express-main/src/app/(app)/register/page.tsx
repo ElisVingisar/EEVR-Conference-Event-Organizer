@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+const deadline = new Date('2024-10-30');
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -24,6 +26,7 @@ const RegisterPage = () => {
   });
 
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
+  const [slidesWarning, setSlidesWarning] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,6 +49,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
 
+    console.log('Form Data before submission:', formData);
     setSubmissionStatus(null);
 
     // Prepare form data for submission
@@ -76,6 +80,17 @@ const RegisterPage = () => {
       arrivalDate: arrivalDateISO,
       departureDate: departureDateISO,
     };
+
+    if (!formData.slides) {
+      const currentDate = new Date();
+      if (currentDate < deadline) {
+        setSlidesWarning(`Please upload your slides before the deadline of ${deadline.toDateString()}.`);
+      } else {
+        setSlidesWarning(null); // Clear any existing warning
+      }
+    } else {
+      setSlidesWarning(null); // Clear the warning if slides are present
+    }
 
 
     try {
@@ -250,6 +265,7 @@ const RegisterPage = () => {
                 <p className="text-red-600 mt-8">Form submission failed. Please try again.</p>
               )}
             </div>
+            {slidesWarning && <p className="text-yellow-500 mt-4">{slidesWarning}</p>}
           </form>
           <Button className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900' asChild>
             <Link href='/'>
