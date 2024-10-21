@@ -14,6 +14,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { DateTime } from 'ics';
 
 // Define where to save the uploaded files
 const uploadDir = path.join(process.cwd(), 'public/uploads');
@@ -35,6 +36,14 @@ export async function POST(req: Request) {
     const talkTitle = data.get('talkTitle') as string | null;
     const picture = data.get('picture') as File | null;
     const slides = data.get('slides') as File | null;
+    const arrivalDateString = data.get('arrivalDate') as string | null;
+    const departureDateString = data.get('departureDate') as string | null;
+    const flightInfo = data.get('flightInfo') as string | null;
+    const hotelAccommodation = data.get('hotelAccommodation') as string | null;
+    const dietaryRestrictions = data.get('dietaryRestrictions') as string | null;
+    const accessibilityNeeds = data.get('accessibilityNeeds') as string | null;
+    const specialRequests = data.get('specialRequests') as string | null;
+
 
     if (!name || !email || !talkTitle) {
         return NextResponse.json({ success: false, message: 'Name, Email, and Talk Title are required.' }, { status: 400 });
@@ -59,6 +68,10 @@ export async function POST(req: Request) {
       slidesPath = `/uploads/${slidesFilename}`; // Path to store in the database
     }
 
+    const arrivalDate = arrivalDateString ? new Date(arrivalDateString).toISOString() : null;
+    const departureDate = departureDateString ? new Date(departureDateString).toISOString() : null;
+
+
     // Create the speaker entry in the database
     const speaker = await prisma.speaker.create({
       data: {
@@ -68,6 +81,13 @@ export async function POST(req: Request) {
         talkTitle,
         picture: picturePath,  // Save the picture file path
         slides: slidesPath,    // Save the slides file path
+        arrivalDate,
+        departureDate,
+        flightInfo,
+        hotelAccommodation,
+        dietaryRestrictions,
+        accessibilityNeeds,
+        specialRequests,
       },
     });
 

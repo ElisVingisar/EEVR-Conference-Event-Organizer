@@ -7,16 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  password String
-  name     String?
-  form     SpeakerForm? 
-}
-
-model SpeakerForm {
-  id        String  @id @default(uuid())
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  String  @unique
+model Speaker {
+  id                    Int       @id @default(autoincrement())
+  name                  String
+  email                 String    @unique
+  picture               String?  // Nullable because it might be uploaded later
+  info                  String?
+  talkTitle             String
+  slides                String?
+  arrivalDate           DateTime?
+  departureDate         DateTime?
+  flightInfo            String?
+  hotelAccommodation     String?
+  dietaryRestrictions   String?
+  accessibilityNeeds    String?
+  specialRequests       String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 }

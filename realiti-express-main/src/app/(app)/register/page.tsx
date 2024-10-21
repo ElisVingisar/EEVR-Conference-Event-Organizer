@@ -14,6 +14,13 @@ const RegisterPage = () => {
     talkTitle: '',
     picture: null, // Picture file
     slides: null,  // Slides file
+    arrivalDate: '',
+    departureDate: '',
+    flightInfo: '',
+    hotelAccommodation: '',
+    dietaryRestrictions: '',
+    accessibilityNeeds: '',
+    specialRequests: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -49,6 +56,23 @@ const RegisterPage = () => {
     if (formData.slides) {
       data.append('slides', formData.slides);
     }
+    data.append('arrivalDate', formData.arrivalDate);
+    data.append('departureDate', formData.departureDate);
+    data.append('flightInfo', formData.flightInfo);
+    data.append('hotelAccommodation', formData.hotelAccommodation);
+    data.append('dietaryRestrictions', formData.dietaryRestrictions);
+    data.append('accessibilityNeeds', formData.accessibilityNeeds);
+    data.append('specialRequests', formData.specialRequests);
+
+    const arrivalDateISO = new Date(formData.arrivalDate).toISOString();
+    const departureDateISO = new Date(formData.departureDate).toISOString();
+
+    const dataToSubmit = {
+      ...formData,
+      arrivalDate: arrivalDateISO,
+      departureDate: departureDateISO,
+    };
+
 
     try {
       const response = await fetch('/api/register', {
@@ -59,6 +83,7 @@ const RegisterPage = () => {
       const responseText = await response.text();
       console.log('Raw response:', responseText);
 
+      
       if (response.ok) {
         const responseData = await response.json();
         console.log('Speaker registered:', responseData);
@@ -165,6 +190,35 @@ const RegisterPage = () => {
                 onChange={handleFileChange} // Handle file selection
                 className="w-full p-2 border border-realiti-blue2 rounded-lg" 
               />
+            </div>
+
+            <div>
+              <label htmlFor="arrivalDate" className="block text-realiti-blue2 font-medium">Arrival Date:</label>
+              <input type="datetime-local" id="arrivalDate" name="arrivalDate" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="departureDate" className="block text-realiti-blue2 font-medium">Departure Date:</label>
+              <input type="datetime-local" id="departureDate" name="departureDate" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="flightInfo" className="block text-realiti-blue2 font-medium">Flight Information:</label>
+              <input type="text" id="flightInfo" name="flightInfo" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="hotelAccommodation" className="block text-realiti-blue2 font-medium">Hotel Accommodation:</label>
+              <input type="text" id="hotelAccommodation" name="hotelAccommodation" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="dietaryRestrictions" className="block text-realiti-blue2 font-medium">Dietary Restrictions:</label>
+              <input type="text" id="dietaryRestrictions" name="dietaryRestrictions" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="accessibilityNeeds" className="block text-realiti-blue2 font-medium">Accessibility Needs:</label>
+              <input type="text" id="accessibilityNeeds" name="accessibilityNeeds" className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="specialRequests" className="block text-realiti-blue2 font-medium">Special Requests:</label>
+              <textarea id="specialRequests" name="specialRequests" rows={4} className="w-full p-2 border border-realiti-blue2 rounded-lg" onChange={handleChange}></textarea>
             </div>
 
             <Button type="submit" className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900'>
