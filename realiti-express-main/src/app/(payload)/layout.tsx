@@ -18,7 +18,6 @@ export default Layout */
 // Layout.tsx
 
 import React from 'react';
-import './custom.scss';
 
 type LayoutProps = {
   children: React.ReactNode;
