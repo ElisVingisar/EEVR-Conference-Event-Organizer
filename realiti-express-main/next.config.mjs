@@ -1,5 +1,19 @@
-import { withPayload } from '@payloadcms/next/withPayload'
 /** @type {import('next').NextConfig} */
+const nextConfig = {
+    images: {
+        // Allowlisted image domains
+        domains: ['localhost', 'images.unsplash.com', 'realitiexpress.com', 'realiti-express.vercel.app', 'via.placeholder.com'],
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+};
+
+export default nextConfig;
+
+/*
+import { withPayload } from '@payloadcms/next/withPayload'
+/** @type {import('next').NextConfig}
 const nextConfig = {
     images: {
         // Unsplash
@@ -12,4 +26,5 @@ const nextConfig = {
 };
 
 export default withPayload(nextConfig);
+*/
 

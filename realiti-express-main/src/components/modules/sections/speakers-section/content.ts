@@ -2,7 +2,7 @@
 // Petri Rajahalme * Founding Partner, FOV Ventures * X, LinkedIn 
 // Rein Zobel * Creative Director, Maru VR *  LinkedIn
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { bigint, z } from "zod";
 
 // Jeremy Dalton, Head of Immsersive, PWC
@@ -97,11 +97,14 @@ const speakersContentSchema = z.object({
 
 })
 
-
+// Removing Payload from the code
 export async function getSpeakersContent(): Promise<SpeakersContent> {
+    return speakersContent;
+    /*
     return await requestPayload<SpeakersContent>({
         slug: 'speakers-section',
         schema: speakersContentSchema,
         fallback: speakersContent
     });
+    */
 }

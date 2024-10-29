@@ -53,18 +53,29 @@ export async function POST(req: Request) {
     if (picture && picture.size > 0) {
       const pictureFilename = `${Date.now()}-${picture.name}`;
       const pictureFullPath = path.join(uploadDir, pictureFilename);
-      const pictureArrayBuffer = await picture.arrayBuffer();
-      await fs.writeFile(pictureFullPath, Buffer.from(pictureArrayBuffer));
+      const pictureArrayBuffer = await picture.arrayBuffer(); // ArrayBuffer
+
+      // Convert ArrayBuffer to a Uint8Array, then to a Base64 string
+      const uint8Array = new Uint8Array(pictureArrayBuffer);
+      const base64String = Buffer.from(uint8Array).toString('base64');
+
+      // Write the Base64 string to a file as binary
+      await fs.writeFile(pictureFullPath, base64String, 'base64');
       picturePath = `/uploads/${pictureFilename}`; // Path to store in the database
     }
 
     // Save the slides file if it exists
     let slidesPath = null;
-    if (slides && slides.size > 0) {
+    if (slides && slides.size > 0) { 
       const slidesFilename = `${Date.now()}-${slides.name}`;
       const slidesFullPath = path.join(uploadDir, slidesFilename);
-      const slidesArrayBuffer = await slides.arrayBuffer();
-      await fs.writeFile(slidesFullPath, Buffer.from(slidesArrayBuffer));
+      const slidesArrayBuffer = await slides.arrayBuffer(); // Get ArrayBuffer
+
+      // Convert ArrayBuffer to Uint8Array
+      const slidesUint8Array = new Uint8Array(slidesArrayBuffer);
+
+      // Write the Uint8Array directly to a file
+      await fs.writeFile(slidesFullPath, slidesUint8Array);
       slidesPath = `/uploads/${slidesFilename}`; // Path to store in the database
     }
 

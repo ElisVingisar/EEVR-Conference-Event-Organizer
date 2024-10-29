@@ -1,5 +1,5 @@
 
-import { requestPayload } from '@/lib/payloadRequest';
+// import { requestPayload } from '@/lib/payloadRequest';
 import { z } from 'zod';
 
 // realiti.express is a two-day conference that aspires to become the premier annual gathering for XR developers in the Baltic states and beyond. The inaugural event will welcome a select audience of 120 participants in a stylish venue in Tallinn Old Town, focusing on themes that Baltic XR companies are renowned for. realiti.express is organized by the Estonian VR and AR Association (EEVR), which has been serving XR companies and institutions in the region since 2014.
@@ -27,10 +27,15 @@ const aboutContentSchema = z.object({
     description: z.string()
 });
 
+// Removing Payload from the code
+
 export async function getAboutContent(): Promise<AboutContent> {
+    return aboutContent;
+    /*
     return await requestPayload({
         slug: 'about-section',
         schema: aboutContentSchema,
         fallback: aboutContent
     })
+    */
 }

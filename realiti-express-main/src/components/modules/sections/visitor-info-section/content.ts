@@ -4,7 +4,7 @@
 // Why Tallinn?
 // How to get there?
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 
@@ -91,10 +91,14 @@ const visitorInfoContentSchema = z.object({
     })
 });
 
+// Removing Payload from the code
 export async function getVisitorInfoContent(): Promise<VisitorInfoContent> {
+    return visitorInfoContent;
+    /*
     return await requestPayload({
         slug: 'visitors-info-section',
         schema: visitorInfoContentSchema,
         fallback: visitorInfoContent,
     })
+    */
 }

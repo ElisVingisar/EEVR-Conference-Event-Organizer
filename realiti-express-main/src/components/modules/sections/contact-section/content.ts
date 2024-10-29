@@ -2,7 +2,7 @@
 // Organizer contacts
 // Social media
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 const contactContent: ContactContent = {
@@ -20,10 +20,14 @@ const contactContentSchema = z.object({
     targetMail: z.string(),
 });
 
+// Removing Payload from the code
 export async function getContactContent(): Promise<ContactContent> {
+    return contactContent;
+    /*
     return await requestPayload({
         slug: 'contact-section',
         schema: contactContentSchema,
         fallback: contactContent
     });
+    */
 }

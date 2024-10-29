@@ -2,7 +2,7 @@
 // Logos 
 // “Become a partner/sponsor” button (?)
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 
@@ -95,11 +95,14 @@ const partnersContentSchema = z.object({
     ),
 });
 
-
+// Removing Payload from the code
 export async function getPartnersContent(): Promise<PartnersContent> {
+    return partnersContent;
+    /*
     return await requestPayload({
         slug: 'partners-section',
         schema: partnersContentSchema,
         fallback: partnersContent,
     })
+    */
 }
