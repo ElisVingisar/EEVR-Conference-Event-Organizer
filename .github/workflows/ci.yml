@@ -51,12 +51,19 @@ jobs:
         run: npm run build
         working-directory: realiti-express-main
 
-      # Step 6: Run tests (optional)
-      - name: Run tests
-        run: npm run test
-        working-directory: realiti-express-main
+      # Step 6: Start the application
+      - name: Start the application
+        run: npm run start &  # Start your application in the background
 
-      # Step 7: Upload build artifacts (optional)
+      # Step 7: Wait for the application to start running
+      - name: Wait for the application to start
+        run: npx wait-on http://localhost:3000  # Wait until the application is available
+
+      # Step 8: Run tests
+      - name: Run Cypress tests
+        run: npm run test  # This should match the script defined in package.json
+
+      # Step 9: Upload build artifacts (optional)
       - name: Upload production build artifacts
         uses: actions/upload-artifact@v3
         with:
