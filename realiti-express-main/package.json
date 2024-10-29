@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "ci": "pnpm build",
+    "test": "cypress run",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "payload generate:types"
   },
