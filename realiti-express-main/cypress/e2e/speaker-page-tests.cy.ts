@@ -38,29 +38,32 @@ describe('Register Page', () => {
   });
 
   it('should successfully submit the form', () => {
-    const uniqueEmail = generateUniqueEmail();
-    // Fill out the form
-    cy.get('input[name="name"]').type('Marlene Ibrus');
-    cy.get('input[name="email"]').type(uniqueEmail);
-    cy.get('textarea[name="info"]').type('I like my cheese drippy bruh>:3');
-    cy.get('input[name="talkTitle"]').type('Mjäu?');
-    cy.get('input[name="arrivalDate"]').type('2024-10-23T07:39'); // Use appropriate date format
-    cy.get('input[name="departureDate"]').type('2024-10-24T07:39');
-  
-    // Simulate file upload (use a test file you have in your fixtures)
-    cy.fixture('example.jpg').then(fileContent => {
-      cy.get('input[name="picture"]').attachFile({ fileContent, fileName: 'example.jpg', mimeType: 'image/jpeg' });
-    });
-  
-    cy.fixture('presentation.pdf').then(fileContent => {
-      cy.get('input[name="slides"]').attachFile({ fileContent, fileName: 'presentation.pdf', mimeType: 'application/pdf' });
-    });
-  
-    cy.get('button[type="submit"]').click(); // Submit the form
-  
-    // Check for success message
-    cy.get('p').contains('Form submission successful!').should('be.visible');
+  const uniqueEmail = generateUniqueEmail();
+
+  // Fill out the form
+  cy.get('input[name="name"]').type('Marlene Ibrus');
+  cy.get('input[name="email"]').type(uniqueEmail);
+  cy.get('textarea[name="info"]').type('I like my cheese drippy bruh>:3');
+  cy.get('input[name="talkTitle"]').type('Mjäu?');
+
+  // Ensure the input type is datetime-local; format is YYYY-MM-DDTHH:MM
+  cy.get('input[name="arrivalDate"]').type('2024-10-23T07:39'); 
+  cy.get('input[name="departureDate"]').type('2024-10-24T07:39');
+
+  // Simulate file upload (use a test file you have in your fixtures)
+  cy.fixture('example.jpg').then(fileContent => {
+    cy.get('input[name="picture"]').attachFile({ fileContent, fileName: 'example.jpg', mimeType: 'image/jpeg' });
   });
+
+  cy.fixture('presentation.pdf').then(fileContent => {
+    cy.get('input[name="slides"]').attachFile({ fileContent, fileName: 'presentation.pdf', mimeType: 'application/pdf' });
+  });
+
+  cy.get('button[type="submit"]').click(); // Submit the form
+
+  // Check for success message
+  cy.get('p').contains('Form submission successful!').should('be.visible');
+});
 
   it('should show warning message if slides are not uploaded before the deadline', () => {
     const uniqueEmail = generateUniqueEmail();
