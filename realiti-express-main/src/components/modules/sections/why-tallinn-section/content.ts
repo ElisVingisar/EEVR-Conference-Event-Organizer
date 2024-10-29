@@ -6,7 +6,7 @@
 // 3. Historical and Modern Fusion
 // Tallinn's picturesque Old Town is a UNESCO World Heritage site and seamlessly merges historical architecture with modern facilities.
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 const tallinnContent: TallinnContent = {
@@ -45,10 +45,14 @@ const tallinnContentSchema = z.object({
     ),
 });
 
+// Removing Payload from the code
 export async function getTallinnContent(): Promise<TallinnContent> {
+    return tallinnContent;
+    /*
     return await requestPayload<TallinnContent>({
         slug: 'why-tallinn-section',
         schema: tallinnContentSchema,
         fallback: tallinnContent,
     })
+    */
 }

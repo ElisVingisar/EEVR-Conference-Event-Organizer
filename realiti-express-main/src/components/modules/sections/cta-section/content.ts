@@ -19,10 +19,14 @@ const ctaContentSchema = z.object({
     button: z.string()
 });
 
+// Removing Payload from the code
 export async function getCTAContent(): Promise<CTAContent> {
+    return ctaContent;
+    /*
     return await requestPayload<CTAContent>({
         slug: 'cta-section',
         schema: ctaContentSchema,
         fallback: ctaContent
     });
+    */
 }

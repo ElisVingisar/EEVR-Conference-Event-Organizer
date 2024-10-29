@@ -22,7 +22,7 @@ Bring you squad of 3 with a full access to everything.                          
 179.00 €
 */
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 export type TicketOption = {
@@ -124,10 +124,15 @@ const buyTicketContentSchema = z.object({
     )
 })
 
+// Removing Payload from the code
 export async function getBuyTicketContent(): Promise<BuyTicketContent> {
+    return buyTicketContent;
+    /*
     return await requestPayload({
         slug: 'buy-ticket-section',
         schema: buyTicketContentSchema,
         fallback: buyTicketContent
     })
+    */
 }
+

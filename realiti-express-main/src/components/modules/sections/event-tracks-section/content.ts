@@ -1,5 +1,5 @@
 
-import { requestPayload } from "@/lib/payloadRequest";
+// import { requestPayload } from "@/lib/payloadRequest";
 import { z } from "zod";
 
 export type EventTracksContent = {
@@ -126,12 +126,14 @@ const eventTracksContent: EventTracksContent = {
     ]
 }
 
-
-
+// Removing Payload from the code
 export async function getEventTracksContent(): Promise<EventTracksContent> {
+    return eventTracksContent;
+    /*
     return await requestPayload<EventTracksContent>({
         slug: 'event-tracks-section',
         schema: eventTracksContentSchema,
         fallback: eventTracksContent,
     })
+    */
 }
