@@ -25,7 +25,7 @@
 // Designing effective XR educational content
 // The full program details will be announced soon.
 
-import { requestPayload } from "@/lib/payloadRequest"
+// import { requestPayload } from "@/lib/payloadRequest"
 import { z } from "zod"
 
 const featuresContent: FeaturesContent = {
@@ -101,10 +101,14 @@ const featureContentSchema = z.object({
   ),
 })
 
+// Removing Payload from the code
 export async function getFeaturesContent(): Promise<FeaturesContent> {
+  return featuresContent;
+  /*
   return await requestPayload({
     slug: 'features-section',
     schema: featureContentSchema,
     fallback: featuresContent,
   })
+  */
 }

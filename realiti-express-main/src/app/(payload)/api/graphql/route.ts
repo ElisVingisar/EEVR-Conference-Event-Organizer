@@ -4,4 +4,10 @@
 import { GRAPHQL_POST } from '@payloadcms/next/routes'
 
 export const POST = GRAPHQL_POST(config) */
-export default {}
+import { NextResponse } from 'next/server';
+
+export const GET = () => {
+  return NextResponse.json({
+    message: 'This endpoint does not support POST requests.',
+  });
+};
