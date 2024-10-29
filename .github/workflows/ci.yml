@@ -46,6 +46,14 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: realiti-express-main
 
+      # Step 5: Set up Prisma database
+      - name: Set up database
+        run: |
+          npx prisma migrate deploy  # Apply migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }} 
+        working-directory: realiti-express-main
+
       # Step 5: Build the Next.js app
       - name: Build the app
         run: npm run build
