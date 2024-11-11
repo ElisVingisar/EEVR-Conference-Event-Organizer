@@ -73,10 +73,18 @@ import {useState} from "react";
   );
 };*/}
 
-const PartnersPage = () => {
-  const [openPackages, setOpenPackages] = useState({ main: false, theme: false, custom: false });
+// Defining the type for packageId and for the openPackages state
+type PackageId = "main" | "theme" | "custom";
+type OpenPackagesState = {
+  main: boolean;
+  theme: boolean;
+  custom: boolean;
+};
 
-  const togglePackage = (packageId) => {
+const PartnersPage = () => {
+  const [openPackages, setOpenPackages] = useState<OpenPackagesState>({ main: false, theme: false, custom: false });
+
+  const togglePackage = (packageId: PackageId) => {
     setOpenPackages((prev) => ({
       ...prev,
       [packageId]: !prev[packageId],
