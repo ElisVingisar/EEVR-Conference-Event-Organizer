@@ -25,9 +25,13 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="root-layout">
-      {children}
-    </div>
+    <html lang="en">
+      <body>
+        <div className="root-layout">
+          {children}
+        </div>
+      </body>
+    </html>
   );
 };
 

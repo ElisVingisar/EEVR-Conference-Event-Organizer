@@ -14,28 +14,24 @@ const RegisterPage = () => {
     email: string;
     info: string;
     talkTitle: string;
-    picture: File | null; // Explicitly defining as File or null
-    slides: File | null;   // Explicitly defining as File or null
+    picture: File | null;
+    slides: File | null;
     arrivalDate: string;
     departureDate: string;
-    flightInfo: string;
     hotelAccommodation: string;
     dietaryRestrictions: string;
-    accessibilityNeeds: string;
     specialRequests: string;
   }>({
     name: '',
     email: '',
     info: '',
     talkTitle: '',
-    picture: null, // Picture file
-    slides: null, // Slides file
+    picture: null,
+    slides: null,
     arrivalDate: '',
     departureDate: '',
-    flightInfo: '',
-    hotelAccommodation: '',
+    hotelAccommodation: '', // Initial state
     dietaryRestrictions: '',
-    accessibilityNeeds: '',
     specialRequests: '',
   });
 
@@ -80,10 +76,8 @@ const RegisterPage = () => {
     }
     data.append('arrivalDate', formData.arrivalDate);
     data.append('departureDate', formData.departureDate);
-    data.append('flightInfo', formData.flightInfo);
     data.append('hotelAccommodation', formData.hotelAccommodation);
     data.append('dietaryRestrictions', formData.dietaryRestrictions);
-    data.append('accessibilityNeeds', formData.accessibilityNeeds);
     data.append('specialRequests', formData.specialRequests);
 
     const arrivalDateISO = new Date(formData.arrivalDate).toISOString();

@@ -30,6 +30,11 @@ function Scene() {
   const layersRef = useRef([])
   const [movement] = useState(() => new THREE.Vector3())
   const [temp] = useState(() => new THREE.Vector3())
+
+  // Default rotation and position for SSR
+  const defaultRotation = useRef(new THREE.Vector3(0, 0, 0));
+  const defaultPosition = useRef(new THREE.Vector3(0, 0, 0));
+
   const layers = [
     { texture: textures[0], z: 0, factor: 0.005, scale: scaleW },
     { texture: textures[1], z: 10, factor: 0.005, scale: scaleW },
