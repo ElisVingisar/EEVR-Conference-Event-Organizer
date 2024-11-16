@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { HfInference } from '@huggingface/inference';
+import * as dotenv from 'dotenv';
+import { ClipLoader } from "react-spinners";
+
+dotenv.config()
 
 const deadline = new Date('2024-10-30');
 
@@ -41,6 +47,8 @@ const RegisterPage = () => {
 
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
   const [slidesWarning, setSlidesWarning] = useState<string | null>(null);
+  const [generatedPost, setGeneratedPost] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -59,6 +67,57 @@ const RegisterPage = () => {
       }));
     }
   };
+
+  const postGenerator = async (prompt: string) => {
+    const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY);   
+    interface HuggingFaceResponse {
+        generated_text: string;
+    }
+
+    const temperature = Math.random() * 0.4 +0.6;  //Random temperature
+    const response = await hf.textGeneration({
+        model: "tiiuae/falcon-7b-instruct",  
+        inputs: prompt,
+        parameters: { temperature },
+    });
+    const result = response as HuggingFaceResponse;
+    const cleanresult = result.generated_text.slice(prompt.length).trim()
+    setLoading(false);
+    setGeneratedPost(cleanresult);
+    return cleanresult;
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Post copied to clipboard!');
+    });
+  };
+
+  const handleGeneratePost = async() => {
+    setLoading(true);
+    const eventInfo = {
+      "name": "Baltic Virtual Reality Event of 2025",
+      "dates" : "2025-11-30",
+      "hashtag" : "#estonianxr"  
+    }
+
+
+      // Build the prompt based on form data
+    const prompt = `Generate a short social media post for the ${eventInfo["name"]}. Include the following information: 
+    Talk Title: ${formData['talkTitle']}
+    Event dates: ${eventInfo["dates"]}
+    Event hashtag: ${eventInfo["hashtag"]}
+    Speaker Info: ${formData['info']}
+    Include an engaging tone for a professional audience. Write from the perspective of the speaker. 
+    Include the event hashtag at the end of the post. Definitely mention the talk title. Do not use any links. 
+    Do not use any names of people. Include only one response and nothing else. 
+    `;
+
+    
+    const postContent = await postGenerator(prompt);
+    console.log("Generated post content: ", postContent);
+    
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
@@ -106,8 +165,27 @@ const RegisterPage = () => {
       setSlidesWarning(null); // Clear the warning if slides are present
     }
 
+    /* ----------to generate ai post through api--------------
+      const modelResponse = await fetch('/api/aimodel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData )
+
+      })
+
+      const modelText = await modelResponse.json();
+      if (modelText.success){
+        console.log('Model response: ', modelText.response)
+      }else{
+        console.log('Model fail :(')
+      }
+    } */
+    
 
     try {
+
       const response = await fetch('/api/register', {
         method: 'POST',
         body: data, // Send form data
@@ -119,6 +197,8 @@ const RegisterPage = () => {
         if (responseData.success) {
           setSubmissionStatus('success');
           console.log('Form submission successful!');
+
+
         } else {
           setSubmissionStatus('error');
           console.error('Form submission failed.');
@@ -139,6 +219,8 @@ const RegisterPage = () => {
       console.log(`Submission status updated: ${submissionStatus}`);
     }
   }, [submissionStatus]);
+
+
 
   return (
     <div className="w-full">
@@ -397,8 +479,8 @@ const RegisterPage = () => {
                         onChange={handleChange}
                         style={{borderColor: '#ECC47A', borderWidth: '3px'}}></textarea>
             </div>*/}
-
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col space-y-0">
+            <div className="flex items-center space-x-4 ">
               <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900">
                 Register
               </Button>
@@ -412,6 +494,43 @@ const RegisterPage = () => {
               )}
             </div>
             {slidesWarning && <p className="text-yellow-500 mt-4">{slidesWarning}</p>}
+            
+            <div className="flex items-center space-x-4">
+              <Button onClick={handleGeneratePost} className="p-6 mt-8 text-lg bg-gray-500 hover:bg-realiti-orange2 hover:text-gray-900">
+                Generate with AI ! 
+              </Button>
+              <p className="mt-8">Clicking on this button will generate a social media post for you to share on your accounts!</p>
+              {/* Conditionally Render the Success/Error Message */}
+              
+            </div>
+            </div>
+            {loading && (
+            <div className="mt-4 text-center">
+              <ClipLoader color="#123456" loading={loading} size={50} />
+            </div>
+            )}
+            {generatedPost && (
+                <div className="bg-gray-100 rounded-md p-4 shadow-lg">
+                <div className="max-w-3xl mx-auto">
+                  <textarea
+                    value={generatedPost}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md mt-4 mb-4 resize-none"
+                    rows={6}
+                  />
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => copyToClipboard(generatedPost)}
+                      className="bg-realiti-blue1 text-white px-4 py-2 rounded-md hover:bg-realiti-orange2"
+                    >
+                      Copy to Clipboard
+                    </button>
+                  </div>
+                </div>
+              </div>
+              )}
+          
+            
           </form>
           <Button className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900' asChild>
             <Link href='/'>

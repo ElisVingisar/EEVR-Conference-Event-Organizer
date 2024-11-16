@@ -9,7 +9,7 @@ const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY);
 
 
 const postGenerator = async (prompt: string) => {
-
+    console.log("here3");
     interface HuggingFaceResponse {
         generated_text: string;
     }
@@ -20,18 +20,19 @@ const postGenerator = async (prompt: string) => {
         inputs: prompt,
         parameters: { temperature },
     });
-
+    console.log("here4", response);
     const result = response as HuggingFaceResponse;
     const cleanresult = result.generated_text.slice(prompt.length).trim()
-
+    console.log("here5", cleanresult);
     return cleanresult;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
+        console.log("here1");
         try {
             const { formData } = req.body;
-
+            console.log("here2", formData);
             // Changable info based on the event
             const eventInfo = {
                 "name": "Baltic Virtual Reality Event of 2025",
@@ -42,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // Build the prompt based on form data
             const prompt = `Generate a short social media post for the ${eventInfo["name"]}. Include the following information: 
-            Talk Title: ${formData['talktitle']}
+            Talk Title: ${formData['talkTitle']}
             Event dates: ${eventInfo["dates"]}
             Event hashtag: ${eventInfo["hashtag"]}
             Speaker Info: ${formData['info']}
