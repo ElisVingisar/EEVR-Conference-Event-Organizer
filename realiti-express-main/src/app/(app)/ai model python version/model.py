@@ -9,7 +9,8 @@ from random import uniform
 from huggingface_hub import HuggingFaceHub
 import os
 
-#os.environ["HUGGINGFACEHUB_API_TOKEN"] = 
+os.environ["NEXT_PUBLIC_HUGGINGFACE_API_KEY"] = "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"
+
 
 app = FastAPI()
 
