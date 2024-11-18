@@ -10,6 +10,7 @@ Assuming that the repo is cloned, then You must follow these steps.
    ```bash
    cd /EEVR-Conference-Event-Organizer/realiti-express-main
    npm install
+   npm install react-spinners --legacy-peer-deps
 2. Database setup: Ensure You have a database instance running (e.g., PostgreSQL, MySQL, etc.). Update your database connection URL in the .env file. Initialize prisma and run migrations.
    ```bash
    npx prisma init
