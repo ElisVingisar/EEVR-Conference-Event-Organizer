@@ -49,11 +49,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          node-version: "18"
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -90,7 +89,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: realiti-express-main/out
+          path: ./build
 
   # Deployment job
   deploy:
