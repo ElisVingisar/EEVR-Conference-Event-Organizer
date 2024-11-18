@@ -83,7 +83,7 @@ jobs:
           API_URL: ${{ secrets.API_URL }}
 
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build --prefix realiti-express-main
+        run: npx next build
 
 
       - name: Upload artifact
