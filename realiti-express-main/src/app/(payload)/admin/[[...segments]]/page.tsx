@@ -26,12 +26,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 type Args = {
-  params: {
-    segments: string[];
-  };
-  searchParams: {
-    [key: string]: string | string[];
-  };
+  params: { segments?: string[] }; // Keep params synchronous and structured as required
+  searchParams: Promise<{ [key: string]: string | string[] }>; // Adjust searchParams to be a Promise
 };
 
 export const generateMetadata = ({ params, searchParams }: Args): Metadata => {
