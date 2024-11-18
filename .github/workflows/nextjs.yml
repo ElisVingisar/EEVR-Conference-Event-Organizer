@@ -72,10 +72,10 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('realiti-express-main/**/package-lock.json', 'realiti-express-main/**/yarn.lock') }}-
       
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --prefix realiti-express-main
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --legacy-peer-deps --prefix realiti-express-main
 
       - name: Build with Next.js
-        run: npx --no-install next build --prefix ./realiti-express-main
+        run: npx --no-install --legacy-peer-deps next build --prefix ./realiti-express-main
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
