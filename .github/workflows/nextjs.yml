@@ -76,11 +76,12 @@ jobs:
 
       - name: Build with Next.js
         run: npx --no-install --legacy-peer-deps next build --prefix ./realiti-express-main
+        working-directory: ./realiti-express-main
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: realiti-express-main/out
+          path: realiti-express-main/build
 
   # Deployment job
   deploy:
