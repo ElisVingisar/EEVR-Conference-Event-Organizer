@@ -15,6 +15,7 @@
     "generate:types": "payload generate:types"
   },
   "dependencies": {
+    "@huggingface/inference": "^2.8.1",
     "@next/third-parties": "^14.2.5",
     "@payloadcms/db-postgres": "3.0.0-beta.58",
     "@payloadcms/next": "3.0.0-beta.58",
@@ -32,15 +33,18 @@
     "@types/three": "^0.155.0",
     "@vercel/blob": "0.23.4",
     "add-to-calendar-button-react": "^2.6.18",
+    "axios": "^1.7.7",
     "calendar-link": "^2.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "formidable": "^3.5.2",
     "framer-motion": "^11.3.5",
     "graphql": "^16.9.0",
     "ics": "^3.7.6",
     "lucide-react": "^0.408.0",
+    "mathjs": "^13.2.2",
     "meshline": "^3.1.6",
     "next": "15.0.3",
     "payload": "3.0.0-beta.58",
@@ -48,7 +52,12 @@
     "postprocessing": "^6.35.4",
     "react": "^18",
     "react-dom": "^18",
+<<<<<<< HEAD
+    "react-spinners": "^0.14.1",
+    "sharp": "0.32.6",
+=======
     "sharp": "^0.32.6",
+>>>>>>> main
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.166.1",

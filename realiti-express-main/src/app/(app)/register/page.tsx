@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { HfInference } from '@huggingface/inference';
+import * as dotenv from 'dotenv';
+import { ClipLoader } from "react-spinners";
+
+dotenv.config()
 
 const deadline = new Date('2024-10-30');
 
@@ -37,6 +43,10 @@ const RegisterPage = () => {
 
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
   const [slidesWarning, setSlidesWarning] = useState<string | null>(null);
+  const [generatedPost, setGeneratedPost] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [generatedImageURL, setGeneratedImageURL] = useState<string | null>(null);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -55,6 +65,118 @@ const RegisterPage = () => {
       }));
     }
   };
+
+  const postGenerator = async (prompt: string) => {
+    const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY);   
+    interface HuggingFaceResponse {
+        generated_text: string;
+    }
+
+    const temperature = Math.random() * 0.4 +0.6;  //Random temperature
+    const response = await hf.textGeneration({
+        model: "tiiuae/falcon-7b-instruct",  
+        inputs: prompt,
+        parameters: { temperature },
+    });
+    const result = response as HuggingFaceResponse;
+    const cleanresult = result.generated_text.slice(prompt.length).trim()
+    setLoading(false);
+    setGeneratedPost(cleanresult);
+    return cleanresult;
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Post copied to clipboard!');
+    });
+  };
+
+  const handleGeneratePost = async() => {
+    setLoading(true);
+    const eventInfo = {
+      "name": "Baltic Virtual Reality Event of 2025",
+      "dates" : "2025-11-30",
+      "hashtag" : "#estonianxr"  
+    }
+
+
+      // Build the prompt based on form data
+    const prompt = `Generate a short social media post for the ${eventInfo["name"]}. Include the following information: 
+    Talk Title: ${formData['talkTitle']}
+    Event dates: ${eventInfo["dates"]}
+    Event hashtag: ${eventInfo["hashtag"]}
+    Speaker Info: ${formData['info']}
+    Include an engaging tone for a professional audience. Write from the perspective of the speaker. 
+    Include the event hashtag at the end of the post. Definitely mention the talk title. Do not use any links. 
+    Do not use any names of people. Include only one response and nothing else. 
+    `;
+
+    
+    const postContent = await postGenerator(prompt);
+    console.log("Generated post content: ", postContent);
+    
+
+    // Generate Promotional Photo
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) {
+      console.error("Failed to get canvas context");
+      setLoading(false);
+      return;
+    }
+
+    const uploadedImage = formData.picture? URL.createObjectURL(formData.picture): null;
+
+    const eventBackground = "/ctabg.jpg"; // Background for the frame/label
+
+    const img1 = document.createElement("img") as HTMLImageElement;
+    const img2 = document.createElement("img") as HTMLImageElement;
+
+    img1.src = uploadedImage!;
+    img2.src = eventBackground;
+
+    // Wait for both images to load
+    img1.onload = () => {
+      img2.onload = () => {
+        // Set canvas dimensions to match the uploaded image
+        canvas.width = img1.width;
+        canvas.height = img1.height;
+
+        // Draw the uploaded image
+        context.drawImage(img1, 0, 0, canvas.width, canvas.height);
+
+        // Draw the event frame or label at the bottom
+        const frameHeight = canvas.height * 0.1; // 20% of the image height
+        context.drawImage(img2, 0, canvas.height - frameHeight, canvas.width, frameHeight);
+
+        const textYPosition = canvas.height - frameHeight / 4;
+        // Add the event name text
+        context.font = "bold 15px Arial";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.fillText(
+          "realiti.express",
+          canvas.width / 2,
+          textYPosition
+        );
+
+        // Provide a download link for the generated image
+        const generatedImage = canvas.toDataURL("image/png");
+        setGeneratedImageURL(generatedImage);
+        
+        //const downloadLink = document.createElement("a");
+        //downloadLink.href = generatedImage;
+        //downloadLink.download = "promotional_photo.png";
+        document.createElement("a").click();
+
+        setLoading(false);
+      };
+    };
+    
+
+
+
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
@@ -100,8 +222,27 @@ const RegisterPage = () => {
       setSlidesWarning(null); // Clear the warning if slides are present
     }
 
+    /* ----------to generate ai post through api--------------
+      const modelResponse = await fetch('/api/aimodel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData )
+
+      })
+
+      const modelText = await modelResponse.json();
+      if (modelText.success){
+        console.log('Model response: ', modelText.response)
+      }else{
+        console.log('Model fail :(')
+      }
+    } */
+    
 
     try {
+
       const response = await fetch('/api/register', {
         method: 'POST',
         body: data, // Send form data
@@ -113,6 +254,8 @@ const RegisterPage = () => {
         if (responseData.success) {
           setSubmissionStatus('success');
           console.log('Form submission successful!');
+
+
         } else {
           setSubmissionStatus('error');
           console.error('Form submission failed.');
@@ -133,6 +276,8 @@ const RegisterPage = () => {
       console.log(`Submission status updated: ${submissionStatus}`);
     }
   }, [submissionStatus]);
+
+
 
   return (
     <div className="w-full">
@@ -391,8 +536,8 @@ const RegisterPage = () => {
                         onChange={handleChange}
                         style={{borderColor: '#ECC47A', borderWidth: '3px'}}></textarea>
             </div>*/}
-
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col space-y-0">
+            <div className="flex items-center space-x-4 ">
               <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900">
                 Register
               </Button>
@@ -406,6 +551,77 @@ const RegisterPage = () => {
               )}
             </div>
             {slidesWarning && <p className="text-yellow-500 mt-4">{slidesWarning}</p>}
+            
+            <div className="flex items-center space-x-4">
+              <Button onClick={handleGeneratePost} className="p-6 mt-8 text-lg bg-gray-500 hover:bg-realiti-orange2 hover:text-gray-900">
+                Generate with AI ! 
+              </Button>
+              {/*<p className="mt-8">Clicking on this button will generate a social media post for you to share on your accounts!</p>*/}
+              {/* Conditionally Render the Success/Error Message */}
+              
+              {/* Info Button with Tooltip */}
+              <div className="relative group mt-8">
+                <button
+                  type="button"
+                  className="bg-realiti-blue2 text-white rounded-full pt-1 pb-1 px-3 hover:bg-realiti-orange2"
+                  aria-label="Information about AI post generation"
+                >
+                  i
+                </button>
+
+                {/* Tooltip */}
+                <div className="absolute left-full ml-2 w-48 p-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  Clicking this button will generate a caption and photo with our event name for you to share on your accounts!
+                </div>
+              </div>
+
+            </div>
+
+            </div>
+            {loading && (
+            <div className="mt-4 text-center">
+              <ClipLoader color="#123456" loading={loading} size={50} />
+            </div>
+            )}
+            {generatedPost && (
+                <div className="bg-gray-100 rounded-md p-4 shadow-lg">
+                <div className="max-w-3xl mx-auto">
+                  <textarea
+                    value={generatedPost}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md mt-4 mb-4 resize-none"
+                    rows={6}
+                  />
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => copyToClipboard(generatedPost)}
+                      className="bg-realiti-blue1 text-white px-4 py-2 rounded-md hover:bg-realiti-orange2"
+                    >
+                      Copy to Clipboard
+                    </button>
+                  </div>
+                </div>
+              </div>
+              )}
+          
+          {generatedImageURL && (
+          <div className="mt-4 text-center">
+            <p className="mb-2 text-lg font-medium">Your Promotional Image:</p>
+            <img
+              src={generatedImageURL}
+              alt="Generated Promotional"
+              className="mx-auto border border-gray-300 rounded-md shadow-lg"
+            />
+            <a
+              href={generatedImageURL}
+              download="promotional_photo.png"
+              className="mt-2 inline-block px-4 py-2 bg-realiti-blue2 text-white rounded-md hover:bg-realiti-orange2"
+            >
+              Download Image
+            </a>
+          </div>
+        )}
+            
           </form>
           <Button className='p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900' asChild>
             <Link href='/'>
