@@ -217,12 +217,12 @@ const RegisterPage = () => {
                     className="bg-realiti-blue2 text-white rounded-full pt-1 pb-1 px-3 hover:bg-realiti-orange2"
                     aria-label="Information about picture upload"
                   >
-                    ℹ️
+                    i
                   </button>
 
                   {/* Tooltip */}
                   <div className="absolute left-full ml-2 w-48 p-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    The picture will be uploaded to the main page to represent you as a speaker. Make sure it is with good quality and with a neutral background.
+                    The photo will be uploaded to the main page to represent you as a speaker. Make sure it is with good quality and with a neutral background.
                   </div>
                 </div>
               </div>
@@ -237,7 +237,7 @@ const RegisterPage = () => {
               />
               <div className="flex items-center gap-2 mt-2">
                 <Button asChild className="p-6 text-lg bg-realiti-blue2 hover:bg-[#ECC47A] text-white hover:text-realiti-blue2 rounded-lg cursor-pointer">
-                  <label htmlFor="picture" className="cursor-pointer">Choose Picture</label>
+                  <label htmlFor="picture" className="cursor-pointer">Choose a Photo</label>
                 </Button>
                   <span className="text-sm text-gray-600">
                       {formData.picture ? formData.picture.name : 'No file chosen'}
@@ -371,10 +371,10 @@ const RegisterPage = () => {
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
             <div>
-              <label htmlFor="accessibilityNeeds" className="block text-realiti-blue2 font-medium">Special Needs:</label>
+              <label htmlFor="specialRequests" className="block text-realiti-blue2 font-medium">Special Needs:</label>
               <input type="text"
-                     id="accessibilityNeeds"
-                     name="accessibilityNeeds"
+                     id="specialRequests"
+                     name="specialRequests"
                      className="w-full p-2 border border-realiti-blue2 rounded-lg"
                      onChange={handleChange}
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
