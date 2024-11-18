@@ -1,0 +1,6 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: tarkvaraprojekt2024
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: eevr-conference-event-organizer
+slsNextApp:
+  component: "@sls-next/serverless-component@4.4.10"
