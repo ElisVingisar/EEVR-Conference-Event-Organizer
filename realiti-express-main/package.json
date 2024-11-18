@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "homepage": "https://username.github.io/repo-name",
+  "homepage": "https://username.github.io/EEVR-Conference-Event-Organizer",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
