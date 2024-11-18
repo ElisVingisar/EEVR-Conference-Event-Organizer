@@ -75,7 +75,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --prefix realiti-express-main
 
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build --prefix realiti-express-main
+        run: npx --no-install next build --prefix ./realiti-express-main
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
