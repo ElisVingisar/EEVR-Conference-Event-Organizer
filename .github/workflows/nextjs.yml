@@ -75,7 +75,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --legacy-peer-deps --prefix realiti-express-main
 
       - name: Build with Next.js
-        run: npx --no-install --legacy-peer-deps next build --prefix ./realiti-express-main
+        run: npx --no-install --legacy-peer-deps next build
         working-directory: ./realiti-express-main
 
       - name: Upload artifact
