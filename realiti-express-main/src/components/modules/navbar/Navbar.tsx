@@ -11,7 +11,8 @@ export const navigation2 = [
   { name: 'Partners', href: '#partners' },
   { name: 'Info', href: '#info' },
   { name: 'Tickets', href: '#tickets' },
-  { name: 'Register', href: '/register'},
+  { name: 'Feedback', href: '#feedback'},
+  //{ name: 'Register', href: '/register'},
   { name: 'Become a Partner', href: '/partners'},
 ]
 

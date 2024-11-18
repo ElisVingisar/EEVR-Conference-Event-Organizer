@@ -12,6 +12,8 @@ import { FeaturesSection } from '@/components/modules/sections/fearures-section/
 import { Section } from '@/components/reusable/section/Section'
 import { CTASection } from '@/components/modules/sections/cta-section/Section'
 import { TallinnSection } from '@/components/modules/sections/why-tallinn-section/Section'
+import FeedbackSection from '@/components/modules/sections/feedback-section/Section';
+
 
 
 
@@ -32,6 +34,7 @@ export default function Home() {
       <TallinnSection />
       <ContactSection />
       <BuyTicketsSection />
+      <FeedbackSection />
       <Footer />
     </main>
 
