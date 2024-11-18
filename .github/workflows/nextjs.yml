@@ -84,6 +84,7 @@ jobs:
 
       - name: Build with Next.js
         run: npx next build
+        working-directory: ./realiti-express-main
 
 
       - name: Upload artifact
