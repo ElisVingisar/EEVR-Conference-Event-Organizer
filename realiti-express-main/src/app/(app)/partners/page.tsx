@@ -83,12 +83,28 @@ type OpenPackagesState = {
 
 const PartnersPage = () => {
   const [openPackages, setOpenPackages] = useState<OpenPackagesState>({ main: false, theme: false, custom: false });
+  const [selectedSponsorship, setSelectedSponsorship] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const togglePackage = (packageId: PackageId) => {
     setOpenPackages((prev) => ({
       ...prev,
       [packageId]: !prev[packageId],
     }));
+  };
+
+  const handleSelectOption = (option: string) => {
+    setSelectedSponsorship((prev) => (prev === option ? null : option));
+  };
+
+  // Handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      setSelectedFile(file); // Store file if it’s of the correct type
+    } else {
+      alert("Please select a .jpg or .png file");
+    }
   };
 
   return (
@@ -122,6 +138,7 @@ const PartnersPage = () => {
               </h3>
             </div>
             {openPackages.main && (
+              <>
               <ul className="list-disc list-inside mt-4 text-yellow-100 space-y-2">
                 <li>Logo in the most prominent position on all event materials</li>
                 <li>Brand featured visually and verbally at the beginning and end of keynotes and main stage presentations</li>
@@ -129,6 +146,13 @@ const PartnersPage = () => {
                 <li>Opportunity to present your company with a main stage talk</li>
                 <li>4 VIP tickets for all events, including speaker dinners</li>
               </ul>
+                <Button
+                className={`mt-4 ${selectedSponsorship === "Main Sponsorship" ? "bg-yellow-700 text-white" : "bg-yellow-500 text-yellow-100"} hover:bg-yellow-600`}
+                onClick={() => handleSelectOption("Main Sponsorship")}
+              >
+                {selectedSponsorship === "Main Sponsorship" ? "Unselect" : "Choose this option"}
+              </Button>
+            </>
             )}
           </div>
 
@@ -140,6 +164,7 @@ const PartnersPage = () => {
               </h3>
             </div>
             {openPackages.theme && (
+              <>
               <ul className="list-disc list-inside mt-4 text-gray-100 space-y-2">
                 <li>Logo on all digital marketing materials</li>
                 <li>Brand featured at the beginning and end of the sponsored theme block</li>
@@ -147,6 +172,13 @@ const PartnersPage = () => {
                 <li>Option to moderate a panel discussion within the supported block</li>
                 <li>2 VIP tickets for all events, including speaker dinners</li>
               </ul>
+              <Button
+                  className={`mt-4 ${selectedSponsorship === "Theme Block Sponsorship" ? "bg-gray-700 text-white" : "bg-gray-500 text-gray-100"} hover:bg-gray-600`}
+                  onClick={() => handleSelectOption("Theme Block Sponsorship")}
+                >
+                  {selectedSponsorship === "Theme Block Sponsorship" ? "Unselect" : "Choose this option"}
+                </Button>
+              </>
             )}
           </div>
 
@@ -156,9 +188,17 @@ const PartnersPage = () => {
               <h3 className="text-2xl font-bold text-blue-50">Custom Sponsorship</h3>
             </div>
             {openPackages.custom && (
+              <>
               <p className="mt-4 text-blue-50">
                 We are open to discussing tailored sponsorship conditions to fit your specific needs. Contact us to arrange a custom agreement.
               </p>
+              <Button
+                  className={`mt-4 ${selectedSponsorship === "Custom Sponsorship" ? "bg-blue-700 text-white" : "bg-blue-500 text-blue-100"} hover:bg-blue-600`}
+                  onClick={() => handleSelectOption("Custom Sponsorship")}
+                >
+                  {selectedSponsorship === "Custom Sponsorship" ? "Unselect" : "Choose this option"}
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -178,11 +218,53 @@ const PartnersPage = () => {
             <label htmlFor="email" className="block text-realiti-blue2 font-medium">Email:</label>
             <input type="email" id="email" name="email" required className="w-full p-2 border border-realiti-blue2 rounded-lg" />
           </div>
+
+          {/* Conditionally Render Chosen Sponsorship Option */}
+          {selectedSponsorship ? (
+            <div>
+              <label className="block text-realiti-blue2 font-medium">Chosen Sponsorship Option:</label>
+              <input
+                type="text"
+                name="chosenSponsorshipOption"
+                className="w-full p-2 border border-realiti-blue2 rounded-lg"
+                value={selectedSponsorship}
+                readOnly
+              />
+            </div>
+          ) : (
+            <p className="text-red-500">Please select a sponsorship option before submitting.</p>
+          )}
+
+          {/* File Upload Section */}
+          <div>
+            <label htmlFor="picture" className="block text-realiti-blue2 font-medium">
+              Upload Your Logo (.jpg or .png)
+            </label>
+            <input
+              type="file"
+              id="picture"
+              name="picture"
+              accept=".jpg,.jpeg,.png"
+              onChange={handleFileChange}
+              className="hidden" // Hide the default file input
+            />
+            <div className="flex items-center gap-2 mt-2">
+              <Button asChild className="p-6 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 text-white hover:text-realiti-blue2 rounded-lg cursor-pointer">
+                <label htmlFor="picture" className="cursor-pointer">Choose Picture</label>
+              </Button>
+              <span className="text-sm text-gray-600">
+                {selectedFile ? selectedFile.name : 'No file chosen'}
+              </span>
+            </div>
+          </div>
+
           <div>
             <label htmlFor="message" className="block text-realiti-blue2 font-medium">Message:</label>
             <textarea id="message" name="message" rows={4} className="w-full p-2 border border-realiti-blue2 rounded-lg"></textarea>
           </div>
-          <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900">
+          <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900"
+            disabled={!selectedSponsorship}
+          >
             Send Message
           </Button>
         </form>
