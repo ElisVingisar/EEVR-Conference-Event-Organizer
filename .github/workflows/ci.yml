@@ -46,24 +46,36 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: realiti-express-main
 
-      # Step 5: Build the Next.js app
+      #Step 5: Configure AWS Credentials
+      -  name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: eu-north-1
+
+      # Step 6: Build the Next.js app
       - name: Build the app
         run: npm run build
         working-directory: realiti-express-main
 
-      # Step 6: Start the application
+      # Step 7: Start the application
       - name: Start the application
         run: npm run start &  # Start your application in the background
         working-directory: realiti-express-main
 
-      # Step 7: Wait for the application to start running
+      # Step 8: Wait for the application to start running
       - name: Wait for the application to start
         run: npx wait-on http://localhost:3000  # Wait until the application is available
         working-directory: realiti-express-main 
 
-      # Step 8: Upload build artifacts (optional)
+      # Step 9: Upload build artifacts (optional)
       - name: Upload production build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: nextjs-build
           path: .next
+      
+      # Step 10: Deploy the app to AWS
+      - name: Deploy app
+        run: npx serverless
