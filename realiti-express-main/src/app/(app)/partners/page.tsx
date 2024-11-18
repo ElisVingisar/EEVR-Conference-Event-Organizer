@@ -92,7 +92,7 @@ const PartnersPage = () => {
   };
 
   return (
-    <div className="w-full">
+    <div>
       {/* Top Image with Info */}
       <div className="relative w-full h-64">
         <Image
@@ -109,7 +109,7 @@ const PartnersPage = () => {
       </div>
 
       {/* Sponsorship Packages Section */}
-      <Section id="sponsorship-packages" className="p-8 rounded-lg shadow-lg bg-white max-w-4xl w-full mx-auto mt-8">
+      <Section id="sponsorship-packages" className="flex flex-col bg-white relative">
         <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-realiti-blue2 mb-8">
           Sponsorship Packages
         </h2>
@@ -165,7 +165,7 @@ const PartnersPage = () => {
       </Section>
 
       {/* Contact Form Section */}
-      <Section id="contact-admin" className="p-8 rounded-lg shadow-lg bg-white max-w-4xl w-full mx-auto mt-8">
+      <Section id="contact-admin" className="mt-0">
         <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-realiti-blue2 mb-8">
           Contact Us
         </h2>
@@ -187,9 +187,7 @@ const PartnersPage = () => {
           </Button>
         </form>
         <Button
-          className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900"
-          asChild
-        >
+          className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900" asChild>
           <Link href="/">
             Back to main page
           </Link>
