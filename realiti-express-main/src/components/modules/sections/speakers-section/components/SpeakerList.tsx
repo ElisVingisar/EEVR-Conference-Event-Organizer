@@ -35,7 +35,7 @@ export function SpeakerList({ speakers }: { speakers: Speaker[] }) {
                 if (!person.name || !person.isDisclosed) {
                   return (
                     <motion.li
-                      key={person.name}
+                      key={`${person.name}-${index}`}
                       initial={{ scale: 0.9 }}
                       whileInView={{
                         scale: 1.0,
@@ -86,7 +86,7 @@ export function SpeakerList({ speakers }: { speakers: Speaker[] }) {
 
                 return (
                   <motion.li
-                    key={person.name}
+                    key={`${person.name}-${index}`}
                     initial={{ scale: 0.9 }}
                     whileInView={{
                       scale: 1.0,

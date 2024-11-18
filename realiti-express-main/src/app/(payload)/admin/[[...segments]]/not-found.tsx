@@ -1,11 +1,13 @@
+// src\app\(payload)\admin\[[...segments]]\not-found.tsx
+
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
 import type { Metadata } from 'next'
 
-// import config from '@payload-config'
+import config from '@/payload.config'
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
-// import views from "@payloadcms/next/views"
+import { NotFoundPage, generatePageMetadata } from '@payloadcms/next/views'
 
-/* type Args = {
+type Args = {
   params: {
     segments: string[]
   }
@@ -13,12 +15,10 @@ import type { Metadata } from 'next'
     [key: string]: string | string[]
   }
 }
-/*
+
 export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
-  views.generatePageMetadata({ config, params, searchParams })
+  generatePageMetadata({ config, params, searchParams })
 
-const NotFound = ({ params, searchParams }: Args) => views.NotFoundPage({ config, params, searchParams }) */
+const NotFound = ({ params, searchParams }: Args) => NotFoundPage({ config, params, searchParams })
 
-// export default NotFound
-
-export default {}
+export default NotFound

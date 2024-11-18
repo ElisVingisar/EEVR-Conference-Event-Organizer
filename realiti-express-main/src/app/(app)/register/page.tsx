@@ -14,8 +14,8 @@ const RegisterPage = () => {
     email: string;
     info: string;
     talkTitle: string;
-    picture: File | null; // Explicitly defining as File or null
-    slides: File | null;   // Explicitly defining as File or null
+    picture: File | null;
+    slides: File | null;
     arrivalDate: string;
     departureDate: string;
     hotelAccommodation: string;
@@ -26,11 +26,11 @@ const RegisterPage = () => {
     email: '',
     info: '',
     talkTitle: '',
-    picture: null, // Picture file
-    slides: null, // Slides file
+    picture: null,
+    slides: null,
     arrivalDate: '',
     departureDate: '',
-    hotelAccommodation: '',
+    hotelAccommodation: '', // Initial state
     dietaryRestrictions: '',
     specialRequests: '',
   });
