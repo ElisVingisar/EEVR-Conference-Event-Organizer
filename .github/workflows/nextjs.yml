@@ -32,10 +32,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step to go into the correct subdirectory (realiti-express-main)
-      - name: Set working directory
-        run: cd realiti-express-main
-
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -48,12 +44,13 @@ jobs:
             echo "Unable to determine package manager"
             exit 1
           fi
+        working-directory: ./realiti-express-main
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache: npm
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
