@@ -16,20 +16,6 @@ type Args = {
 }
 
 
-<<<<<<< HEAD
-const Page = ({ params, searchParams }: Args) => views.RootPage({ config, params, searchParams })
-
-export default Page
- */
-// Page.tsx
-
-import React from 'react';
-import type { Metadata } from 'next';
-
-type Args = {
-  params: { segments?: string[] }; // Keep params synchronous and structured as required
-  searchParams: Promise<{ [key: string]: string | string[] }>; // Adjust searchParams to be a Promise
-=======
 export const generateMetadata = async ({ params, searchParams }: Args): Promise<Metadata> => {
   const resolvedParams = await params; // Ensure params are awaited
   return generatePageMetadata({
@@ -37,7 +23,6 @@ export const generateMetadata = async ({ params, searchParams }: Args): Promise<
     params: resolvedParams,
     searchParams,
   });
->>>>>>> 0c547e35d56af0216de849534c91645fcdebbda5
 };
 
 const Page = async ({ params, searchParams }: Args) => {
