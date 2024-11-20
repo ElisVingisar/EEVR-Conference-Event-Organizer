@@ -9,7 +9,7 @@ Assuming that the repo is cloned, then You must follow these steps.
 1. Install dependencies: "--legacy-peer-deps" flag may be needed.
    ```bash
    cd /EEVR-Conference-Event-Organizer/realiti-express-main
-   npm install
+   npm install --legacy-peer-deps
    npm install react-spinners --legacy-peer-deps
 2. Running the app: Currently olny dev mode works
    ```bash
