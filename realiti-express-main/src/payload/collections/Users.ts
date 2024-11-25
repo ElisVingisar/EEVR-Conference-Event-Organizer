@@ -10,8 +10,4 @@ export const Users: CollectionConfig = {
     // Email added by default
     // Add more fields as needed
   ],
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0c547e35d56af0216de849534c91645fcdebbda5
