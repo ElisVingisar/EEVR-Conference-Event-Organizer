@@ -78,10 +78,13 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --prefix realiti-express-main --legacy-peer-deps
 
       - name: Set up environment variables
-        run: echo "REACT_APP_API_URL=$API_URL" >> realiti-express-main/.env
+        run: |
+          echo "REACT_APP_API_URL=$API_URL" >> realiti-express-main/.env
+          echo "BLOB_READ_WRITE_TOKEN=$BLOB_READ_WRITE_TOKEN" >> realiti-express-main/.env
         env:
           API_URL: ${{ secrets.API_URL }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.VERCEL_BLOB_READ_WRITE_TOKEN }}
+
 
       - name: Build with Next.js
         run: npx next build          
