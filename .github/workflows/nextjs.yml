@@ -75,7 +75,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('realiti-express-main/package-lock.json', 'realiti-express-main/**/yarn.lock') }}-
       
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --prefix realiti-express-main
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --prefix realiti-express-main --legacy-peer-deps
 
       - name: Set up environment variables
         run: echo "REACT_APP_API_URL=$API_URL" >> realiti-express-main/.env
