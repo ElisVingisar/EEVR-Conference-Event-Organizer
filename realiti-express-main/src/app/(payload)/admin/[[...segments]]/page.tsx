@@ -1,37 +1,24 @@
-// src\app\(payload)\admin\[[...segments]]\page.tsx
-
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
+/* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
 import type { Metadata } from 'next'
 
-import config from '@payload-config';
-/* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
-import { RootPage, generatePageMetadata } from '@payloadcms/next/views';
+import config from '@payload-config'
+import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
+import { importMap } from '../importMap.js'
+
 type Args = {
-  params: {
+  params: Promise<{
     segments: string[]
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     [key: string]: string | string[]
-  }
+  }>
 }
 
+export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
+  generatePageMetadata({ config, params, searchParams })
 
-export const generateMetadata = async ({ params, searchParams }: Args): Promise<Metadata> => {
-  const resolvedParams = await params; // Ensure params are awaited
-  return generatePageMetadata({
-    config,
-    params: resolvedParams,
-    searchParams,
-  });
-};
+const Page = ({ params, searchParams }: Args) =>
+  RootPage({ config, params, searchParams, importMap })
 
-const Page = async ({ params, searchParams }: Args) => {
-  const resolvedParams = await params; // Same for the main page logic
-  return RootPage({
-    config,
-    params: resolvedParams,
-    searchParams,
-  });
-};
-
-export default Page;
+export default Page

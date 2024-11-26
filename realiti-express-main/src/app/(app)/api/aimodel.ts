@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '../../../../node_modules/next/types';
 import { HfInference } from '@huggingface/inference';
 import * as dotenv from 'dotenv'
 

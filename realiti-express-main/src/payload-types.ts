@@ -13,8 +13,20 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {};
+  collectionsSelect: {
+    users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
+  db: {
+    defaultIDType: number;
   };
   globals: {
     'about-section': AboutSection;
@@ -28,20 +40,41 @@ export interface Config {
     'visitors-info-section': VisitorsInfoSection;
     'why-tallinn-section': WhyTallinnSection;
   };
+  globalsSelect: {
+    'about-section': AboutSectionSelect<false> | AboutSectionSelect<true>;
+    'buy-ticket-section': BuyTicketSectionSelect<false> | BuyTicketSectionSelect<true>;
+    'contact-section': ContactSectionSelect<false> | ContactSectionSelect<true>;
+    'cta-section': CtaSectionSelect<false> | CtaSectionSelect<true>;
+    'event-tracks-section': EventTracksSectionSelect<false> | EventTracksSectionSelect<true>;
+    'features-section': FeaturesSectionSelect<false> | FeaturesSectionSelect<true>;
+    'partners-section': PartnersSectionSelect<false> | PartnersSectionSelect<true>;
+    'speakers-section': SpeakersSectionSelect<false> | SpeakersSectionSelect<true>;
+    'visitors-info-section': VisitorsInfoSectionSelect<false> | VisitorsInfoSectionSelect<true>;
+    'why-tallinn-section': WhyTallinnSectionSelect<false> | WhyTallinnSectionSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
+  };
+  jobs: {
+    tasks: unknown;
+    workflows: unknown;
   };
 }
 export interface UserAuthOperations {
   forgotPassword: {
     email: string;
+    password: string;
   };
   login: {
-    password: string;
     email: string;
+    password: string;
   };
   registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
     email: string;
     password: string;
   };
@@ -84,6 +117,29 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents".
+ */
+export interface PayloadLockedDocument {
+  id: number;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null);
+  globalSlug?: string | null;
+  user: {
+    relationTo: 'users';
+    value: number | User;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
@@ -115,6 +171,71 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents_select".
+ */
+export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences_select".
+ */
+export interface PayloadPreferencesSelect<T extends boolean = true> {
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations_select".
+ */
+export interface PayloadMigrationsSelect<T extends boolean = true> {
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -248,7 +369,7 @@ export interface SpeakersSection {
   speakers: {
     name?: string | null;
     position?: string | null;
-    image?: number | Media | null;
+    image?: (number | null) | Media;
     linkedinUrl?: string | null;
     xUrl?: string | null;
     isDisclosed: boolean;
@@ -295,6 +416,206 @@ export interface WhyTallinnSection {
   }[];
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-section_select".
+ */
+export interface AboutSectionSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "buy-ticket-section_select".
+ */
+export interface BuyTicketSectionSelect<T extends boolean = true> {
+  title?: T;
+  ticketUrl?: T;
+  ticketOptions?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        price?: T;
+        included?:
+          | T
+          | {
+              included?: T;
+              id?: T;
+            };
+        notIncluded?:
+          | T
+          | {
+              notIncluded?: T;
+              id?: T;
+            };
+        isFeatured?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-section_select".
+ */
+export interface ContactSectionSelect<T extends boolean = true> {
+  title?: T;
+  targetMail?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cta-section_select".
+ */
+export interface CtaSectionSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  button?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event-tracks-section_select".
+ */
+export interface EventTracksSectionSelect<T extends boolean = true> {
+  day1?:
+    | T
+    | {
+        hourStart?: T;
+        hourEnd?: T;
+        title?: T;
+        location?: T;
+        id?: T;
+      };
+  day2?:
+    | T
+    | {
+        hourStart?: T;
+        hourEnd?: T;
+        title?: T;
+        location?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "features-section_select".
+ */
+export interface FeaturesSectionSelect<T extends boolean = true> {
+  features?:
+    | T
+    | {
+        title?: T;
+        keyTopics?:
+          | T
+          | {
+              topic?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners-section_select".
+ */
+export interface PartnersSectionSelect<T extends boolean = true> {
+  title?: T;
+  partners?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speakers-section_select".
+ */
+export interface SpeakersSectionSelect<T extends boolean = true> {
+  title?: T;
+  speakers?:
+    | T
+    | {
+        name?: T;
+        position?: T;
+        image?: T;
+        linkedinUrl?: T;
+        xUrl?: T;
+        isDisclosed?: T;
+        bio?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitors-info-section_select".
+ */
+export interface VisitorsInfoSectionSelect<T extends boolean = true> {
+  title?: T;
+  howToGetThere?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+      };
+  nearbyHotels?:
+    | T
+    | {
+        title?: T;
+        content?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              link?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "why-tallinn-section_select".
+ */
+export interface WhyTallinnSectionSelect<T extends boolean = true> {
+  title?: T;
+  reasons?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

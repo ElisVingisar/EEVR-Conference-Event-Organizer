@@ -35,6 +35,7 @@ const nextConfig = {
     },
     webpack: (config) => {
       config.resolve.alias['@payload-config'] = path.join(__dirname, 'src/payload.config.ts');
+      config.resolve.extensions.push('.ts', '.tsx');
       return config;
     },
 };

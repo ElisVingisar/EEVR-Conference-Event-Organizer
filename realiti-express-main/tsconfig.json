@@ -19,11 +19,10 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@payload-config": ["src/payload.config.ts"],
+      "@payload-config": ["./src/payload.config.ts"],
       "@/payload/*": ["./src/payload/*"]
     },
     "target": "ES2017",
-    "baseUrl": ".",
   },
   "include": [
     "next-env.d.ts",

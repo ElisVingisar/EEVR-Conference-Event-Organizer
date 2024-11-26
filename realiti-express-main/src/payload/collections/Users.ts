@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import 'dotenv/config';
 
 export const Users: CollectionConfig = {
   slug: 'users',

@@ -1,4 +1,5 @@
-import type { Metadata } from 'next'
+
+import { Metadata } from '../../../node_modules/next/types'
 import { Inter, Sanchez, League_Spartan } from 'next/font/google'
 import './../globals.css'
 

@@ -3,6 +3,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import path from 'path';
 import sharp from 'sharp';
+import 'dotenv/config';
 import { buildConfig } from 'payload';
 import { fileURLToPath } from 'url';
 
@@ -24,10 +25,21 @@ import { WhyTallinnSection } from './payload/globals/sections/WhyTallinnSection'
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const testUserEmail = process.env.TEST_EMAIL || '';
+const testUserPassword = process.env.TEST_PASSWORD || '';
+
+
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
   admin: {
     user: Users.slug,
+    autoLogin: process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === 'true'
+      ? {
+          email: 'test@example.com',
+          password: 'test',
+          prefillOnly: true,
+        }
+      : false,
   },
   collections: [Users, Media],
   globals: [
