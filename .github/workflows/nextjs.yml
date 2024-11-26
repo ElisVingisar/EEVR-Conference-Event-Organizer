@@ -84,6 +84,8 @@ jobs:
 
       - name: Build with Next.js
         run: npx next build
+        env:
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.VERCEL_BLOB_READ_WRITE_TOKEN }}
         working-directory: ./realiti-express-main
 
 
