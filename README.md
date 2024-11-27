@@ -13,7 +13,8 @@ Assuming that the repo is cloned, then You must follow these steps.
    ```
 2. Setting up loal variables.
    - In the folder `/EEVR-Conference-Event-Organizer/realiti-express-main` create a new file called `.env`.
-   - Copy the contents of the `/EEVR-Conference-Event-Organizer/realiti-express-main/.env.example` into `.env`.
+   - ***Contact the team members for the contents of the `.env` file.***
+   - Copy the necessary local variables into the `.env` file and save.
      
 ### 2. Running the app
 Assuming You are located in the `/EEVR-Conference-Event-Organizer/realiti-express-main` directory.
@@ -33,20 +34,7 @@ This project uses cypress for testing. First, navigate to the cypress folder. Th
    ```
 
 ## Database Setup Instructions
-These instructions are intended for running the application locally.
-### 1. Create a Database
-   - Ensure you have a database server (e.g., PostgreSQL, MongoDB, MySQL) installed and running.
-   - Create a database with the name `payload_database` on your database server.
-
-### 2. Update the `.env` File
-   - Open the `.env` file in the root directory of the project.
-   - Add the database connection URL in the following format:
-      ```bash
-      DATABASE_URL=<your-database-connection-string>
-   
-   - Replace `<your-database-connection-string>` with the appropriate connection string for your database. Examples:
-   - **PostgreSQL**: `postgresql://username:password@localhost:5432/payload_database`
-
+This project uses a serverless Vercel PostgreSQL database. It should be working, if You have saved the correct local variables to the `.env` file.
 ### 3. Verify Connection
 Test the connection by running the application to ensure it can connect to the database without errors.
 
