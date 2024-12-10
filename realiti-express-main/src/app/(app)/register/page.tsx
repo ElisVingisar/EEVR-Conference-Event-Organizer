@@ -101,14 +101,15 @@ const RegisterPage = () => {
 
 
       // Build the prompt based on form data
-    const prompt = `Generate a short social media post for the ${eventInfo["name"]}. Include the following information: 
+    const prompt = `Act as a social media post generator. Generate a concise, engaging social media post about the ${eventInfo["name"]}. Include: 
     Talk Title: ${formData['talkTitle']}
     Event dates: ${eventInfo["dates"]}
     Event hashtag: ${eventInfo["hashtag"]}
     Speaker Info: ${formData['info']}
-    Include an engaging tone for a professional audience. Write from the perspective of the speaker. 
-    Include the event hashtag at the end of the post. Definitely mention the talk title. Do not use any links. 
-    Do not use any names of people. Include only one response and nothing else. 
+    Use an engaging tone for a professional audience, written from the perspective of the speaker. 
+    Ensure the event hashtag is included at the end, do not use any other hashtags. Mention the talk title clearly.
+    Avoid links, names of people, quotation marks, or any formatting.
+    Respond only with the generated post text, and nothing else. Do not make incomplete sentences.
     `;
 
     

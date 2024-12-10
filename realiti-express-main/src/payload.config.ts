@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { Users } from './payload/collections/Users';
 import { Media } from './payload/collections/Media';
 import { Feedback } from './payload/collections/Feedback';
+//import { Registration } from './payload/collections/Registration';
 
 import { Posts } from './payload/collections/Posts';
 import { AboutSection } from './payload/globals/sections/AboutSection';
