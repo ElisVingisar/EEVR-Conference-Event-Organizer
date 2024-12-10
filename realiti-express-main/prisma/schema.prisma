@@ -4,22 +4,364 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Speaker {
-  id                    Int       @id @default(autoincrement())
-  name                  String
-  email                 String    @unique
-  picture               String?  // Nullable because it might be uploaded later
-  info                  String?
-  talkTitle             String
-  slides                String?
-  arrivalDate           DateTime?
-  departureDate         DateTime?
-  hotelAccommodation     String?
-  dietaryRestrictions   String?
-  specialRequests       String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+model about_section {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar
+  description String    @db.VarChar
+  updated_at  DateTime? @db.Timestamptz(3)
+  created_at  DateTime? @db.Timestamptz(3)
+}
+
+model buy_ticket_section {
+  id                                Int                                 @id @default(autoincrement())
+  title                             String                              @default("Buy Ticket") @db.VarChar
+  ticket_url                        String                              @default("https://fienta.com/realiti-express-first-baltic-xr-conf") @db.VarChar
+  updated_at                        DateTime?                           @db.Timestamptz(3)
+  created_at                        DateTime?                           @db.Timestamptz(3)
+  buy_ticket_section_ticket_options buy_ticket_section_ticket_options[]
+}
+
+model buy_ticket_section_ticket_options {
+  order                                          Int                                              @map("_order")
+  parent_id                                      Int                                              @map("_parent_id")
+  id                                             String                                           @id @db.VarChar
+  title                                          String                                           @db.VarChar
+  description                                    String                                           @db.VarChar
+  price                                          Decimal                                          @db.Decimal
+  is_featured                                    Boolean?                                         @default(false)
+  buy_ticket_section                             buy_ticket_section                               @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "buy_ticket_section_ticket_options_parent_id_fk")
+  buy_ticket_section_ticket_options_included     buy_ticket_section_ticket_options_included[]
+  buy_ticket_section_ticket_options_not_included buy_ticket_section_ticket_options_not_included[]
+
+  @@index([order], map: "buy_ticket_section_ticket_options_order_idx")
+  @@index([parent_id], map: "buy_ticket_section_ticket_options_parent_id_idx")
+}
+
+model buy_ticket_section_ticket_options_included {
+  order                             Int                               @map("_order")
+  parent_id                         String                            @map("_parent_id") @db.VarChar
+  id                                String                            @id @db.VarChar
+  included                          String                            @db.VarChar
+  buy_ticket_section_ticket_options buy_ticket_section_ticket_options @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "buy_ticket_section_ticket_options_included_parent_id_fk")
+
+  @@index([order], map: "buy_ticket_section_ticket_options_included_order_idx")
+  @@index([parent_id], map: "buy_ticket_section_ticket_options_included_parent_id_idx")
+}
+
+model buy_ticket_section_ticket_options_not_included {
+  order                             Int                               @map("_order")
+  parent_id                         String                            @map("_parent_id") @db.VarChar
+  id                                String                            @id @db.VarChar
+  not_included                      String?                           @db.VarChar
+  buy_ticket_section_ticket_options buy_ticket_section_ticket_options @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "buy_ticket_section_ticket_options_not_included_parent_id_fk")
+
+  @@index([order], map: "buy_ticket_section_ticket_options_not_included_order_idx")
+  @@index([parent_id], map: "buy_ticket_section_ticket_options_not_included_parent_id_idx")
+}
+
+model contact_section {
+  id          Int       @id @default(autoincrement())
+  title       String    @default("Still have some questions?") @db.VarChar
+  target_mail String    @default("eva@eevr.com") @db.VarChar
+  updated_at  DateTime? @db.Timestamptz(3)
+  created_at  DateTime? @db.Timestamptz(3)
+}
+
+model cta_section {
+  id          Int       @id @default(autoincrement())
+  title       String?   @default("Interested?") @db.VarChar
+  description String    @default("Book your TICKET now for a jam-packed day of presentations, discussions and demos, followed by a day of hands-on workshops, topped off by the all-night gaming marathon, MängudeÖÖ.") @db.VarChar
+  button      String    @default("Get Tickets") @db.VarChar
+  updated_at  DateTime? @db.Timestamptz(3)
+  created_at  DateTime? @db.Timestamptz(3)
+}
+
+model event_tracks_section {
+  id                        Int                         @id @default(autoincrement())
+  updated_at                DateTime?                   @db.Timestamptz(3)
+  created_at                DateTime?                   @db.Timestamptz(3)
+  event_tracks_section_day1 event_tracks_section_day1[]
+  event_tracks_section_day2 event_tracks_section_day2[]
+}
+
+model event_tracks_section_day1 {
+  order                Int                  @map("_order")
+  parent_id            Int                  @map("_parent_id")
+  id                   String               @id @db.VarChar
+  hour_start           DateTime?            @db.Timestamptz(3)
+  hour_end             DateTime?            @db.Timestamptz(3)
+  title                String               @db.VarChar
+  location             String?              @db.VarChar
+  event_tracks_section event_tracks_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "event_tracks_section_day1_parent_id_fk")
+
+  @@index([order], map: "event_tracks_section_day1_order_idx")
+  @@index([parent_id], map: "event_tracks_section_day1_parent_id_idx")
+}
+
+model event_tracks_section_day2 {
+  order                Int                  @map("_order")
+  parent_id            Int                  @map("_parent_id")
+  id                   String               @id @db.VarChar
+  hour_start           DateTime             @db.Timestamptz(3)
+  hour_end             DateTime             @db.Timestamptz(3)
+  title                String               @db.VarChar
+  location             String?              @db.VarChar
+  event_tracks_section event_tracks_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "event_tracks_section_day2_parent_id_fk")
+
+  @@index([order], map: "event_tracks_section_day2_order_idx")
+  @@index([parent_id], map: "event_tracks_section_day2_parent_id_idx")
+}
+
+model features_section {
+  id                        Int                         @id @default(autoincrement())
+  updated_at                DateTime?                   @db.Timestamptz(3)
+  created_at                DateTime?                   @db.Timestamptz(3)
+  features_section_features features_section_features[]
+}
+
+model features_section_features {
+  order                                Int                                    @map("_order")
+  parent_id                            Int                                    @map("_parent_id")
+  id                                   String                                 @id @db.VarChar
+  title                                String?                                @db.VarChar
+  features_section                     features_section                       @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "features_section_features_parent_id_fk")
+  features_section_features_key_topics features_section_features_key_topics[]
+
+  @@index([order], map: "features_section_features_order_idx")
+  @@index([parent_id], map: "features_section_features_parent_id_idx")
+}
+
+model features_section_features_key_topics {
+  order                     Int                       @map("_order")
+  parent_id                 String                    @map("_parent_id") @db.VarChar
+  id                        String                    @id @db.VarChar
+  topic                     String?                   @db.VarChar
+  features_section_features features_section_features @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "features_section_features_key_topics_parent_id_fk")
+
+  @@index([order], map: "features_section_features_key_topics_order_idx")
+  @@index([parent_id], map: "features_section_features_key_topics_parent_id_idx")
+}
+
+model feedback {
+  id                            Int                             @id @default(autoincrement())
+  satisfaction_rating           Decimal                         @db.Decimal
+  organization_rating           Decimal                         @db.Decimal
+  future_speakers               String?                         @db.VarChar
+  additional_comments           String?                         @db.VarChar
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  payload_locked_documents_rels payload_locked_documents_rels[]
+
+  @@index([created_at], map: "feedback_created_at_1_idx")
+  @@index([updated_at], map: "feedback_updated_at_1_idx")
+}
+
+model media {
+  id                            Int                             @id @default(autoincrement())
+  alt                           String                          @db.VarChar
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  url                           String?                         @db.VarChar
+  thumbnail_u_r_l               String?                         @db.VarChar
+  filename                      String?                         @unique(map: "media_filename_1_idx") @db.VarChar
+  mime_type                     String?                         @db.VarChar
+  filesize                      Decimal?                        @db.Decimal
+  width                         Decimal?                        @db.Decimal
+  height                        Decimal?                        @db.Decimal
+  focal_x                       Decimal?                        @db.Decimal
+  focal_y                       Decimal?                        @db.Decimal
+  partners_section_partners     partners_section_partners[]
+  payload_locked_documents_rels payload_locked_documents_rels[]
+  speakers_section_speakers     speakers_section_speakers[]
+
+  @@index([created_at], map: "media_created_at_1_idx")
+  @@index([updated_at], map: "media_updated_at_1_idx")
+}
+
+model partners_section {
+  id                        Int                         @id @default(autoincrement())
+  title                     String                      @default("Partners") @db.VarChar
+  updated_at                DateTime?                   @db.Timestamptz(3)
+  created_at                DateTime?                   @db.Timestamptz(3)
+  partners_section_partners partners_section_partners[]
+}
+
+model partners_section_partners {
+  order            Int              @map("_order")
+  parent_id        Int              @map("_parent_id")
+  id               String           @id @db.VarChar
+  name             String           @db.VarChar
+  image_id         Int
+  url              String?          @db.VarChar
+  media            media            @relation(fields: [image_id], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "partners_section_partners_image_id_media_id_fk")
+  partners_section partners_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "partners_section_partners_parent_id_fk")
+
+  @@index([image_id], map: "partners_section_partners_image_1_idx")
+  @@index([order], map: "partners_section_partners_order_idx")
+  @@index([parent_id], map: "partners_section_partners_parent_id_idx")
+}
+
+model payload_locked_documents {
+  id                            Int                             @id @default(autoincrement())
+  global_slug                   String?                         @db.VarChar
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  payload_locked_documents_rels payload_locked_documents_rels[]
+
+  @@index([created_at], map: "payload_locked_documents_created_at_1_idx")
+  @@index([global_slug], map: "payload_locked_documents_global_slug_1_idx")
+  @@index([updated_at], map: "payload_locked_documents_updated_at_1_idx")
+}
+
+model payload_locked_documents_rels {
+  id                       Int                      @id @default(autoincrement())
+  order                    Int?
+  parent_id                Int
+  path                     String                   @db.VarChar
+  users_id                 Int?
+  media_id                 Int?
+  feedback_id              Int?
+  feedback                 feedback?                @relation(fields: [feedback_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_feedback_fk")
+  media                    media?                   @relation(fields: [media_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_media_fk")
+  payload_locked_documents payload_locked_documents @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_parent_fk")
+  users                    users?                   @relation(fields: [users_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_users_fk")
+
+  @@index([feedback_id], map: "payload_locked_documents_rels_feedback_id_1_idx")
+  @@index([media_id], map: "payload_locked_documents_rels_media_id_1_idx")
+  @@index([order])
+  @@index([parent_id], map: "payload_locked_documents_rels_parent_idx")
+  @@index([path])
+  @@index([users_id], map: "payload_locked_documents_rels_users_id_1_idx")
+}
+
+model payload_migrations {
+  id         Int      @id @default(autoincrement())
+  name       String?  @db.VarChar
+  batch      Decimal? @db.Decimal
+  updated_at DateTime @default(now()) @db.Timestamptz(3)
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([created_at], map: "payload_migrations_created_at_1_idx")
+  @@index([updated_at], map: "payload_migrations_updated_at_1_idx")
+}
+
+model payload_preferences {
+  id                       Int                        @id @default(autoincrement())
+  key                      String?                    @db.VarChar
+  value                    Json?
+  updated_at               DateTime                   @default(now()) @db.Timestamptz(3)
+  created_at               DateTime                   @default(now()) @db.Timestamptz(3)
+  payload_preferences_rels payload_preferences_rels[]
+
+  @@index([created_at], map: "payload_preferences_created_at_1_idx")
+  @@index([key], map: "payload_preferences_key_1_idx")
+  @@index([updated_at], map: "payload_preferences_updated_at_1_idx")
+}
+
+model payload_preferences_rels {
+  id                  Int                 @id @default(autoincrement())
+  order               Int?
+  parent_id           Int
+  path                String              @db.VarChar
+  users_id            Int?
+  payload_preferences payload_preferences @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_preferences_rels_parent_fk")
+  users               users?              @relation(fields: [users_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_preferences_rels_users_fk")
+
+  @@index([order])
+  @@index([parent_id], map: "payload_preferences_rels_parent_idx")
+  @@index([path])
+  @@index([users_id], map: "payload_preferences_rels_users_id_1_idx")
+}
+
+model speakers_section {
+  id                        Int                         @id @default(autoincrement())
+  title                     String                      @default("Speakers") @db.VarChar
+  updated_at                DateTime?                   @db.Timestamptz(3)
+  created_at                DateTime?                   @db.Timestamptz(3)
+  speakers_section_speakers speakers_section_speakers[]
+}
+
+model speakers_section_speakers {
+  order            Int              @map("_order")
+  parent_id        Int              @map("_parent_id")
+  id               String           @id @db.VarChar
+  name             String?          @db.VarChar
+  position         String?          @db.VarChar
+  image_id         Int?
+  linkedin_url     String?          @db.VarChar
+  x_url            String?          @db.VarChar
+  is_disclosed     Boolean          @default(false)
+  bio              String?          @db.VarChar
+  media            media?           @relation(fields: [image_id], references: [id], onUpdate: NoAction, map: "speakers_section_speakers_image_id_media_id_fk")
+  speakers_section speakers_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "speakers_section_speakers_parent_id_fk")
+
+  @@index([image_id], map: "speakers_section_speakers_image_1_idx")
+  @@index([order], map: "speakers_section_speakers_order_idx")
+  @@index([parent_id], map: "speakers_section_speakers_parent_id_idx")
+}
+
+model users {
+  id                            Int                             @id @default(autoincrement())
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
+  email                         String                          @unique(map: "users_email_1_idx") @db.VarChar
+  reset_password_token          String?                         @db.VarChar
+  reset_password_expiration     DateTime?                       @db.Timestamptz(3)
+  salt                          String?                         @db.VarChar
+  hash                          String?                         @db.VarChar
+  login_attempts                Decimal?                        @default(0) @db.Decimal
+  lock_until                    DateTime?                       @db.Timestamptz(3)
+  payload_locked_documents_rels payload_locked_documents_rels[]
+  payload_preferences_rels      payload_preferences_rels[]
+
+  @@index([created_at], map: "users_created_at_1_idx")
+  @@index([updated_at], map: "users_updated_at_1_idx")
+}
+
+model visitors_info_section {
+  id                                          Int                                           @id @default(autoincrement())
+  title                                       String                                        @default("Visitors Info") @db.VarChar
+  how_to_get_there_title                      String                                        @default("How to get there") @db.VarChar
+  how_to_get_there_content                    String                                        @default("Tallinn is well-connected to major European cities, making it easily accessible for international attendees. The city`s efficient public transport system and compact size ensure convenient travel and accommodation options. Tallinn Airport, located just a short drive from the city center, offers direct flights to numerous destinations.") @db.VarChar
+  nearby_hotels_title                         String                                        @default("Nearby Hotels to stay in Tallinn") @db.VarChar
+  updated_at                                  DateTime?                                     @db.Timestamptz(3)
+  created_at                                  DateTime?                                     @db.Timestamptz(3)
+  visitors_info_section_nearby_hotels_content visitors_info_section_nearby_hotels_content[]
+}
+
+model visitors_info_section_nearby_hotels_content {
+  order                 Int                   @map("_order")
+  parent_id             Int                   @map("_parent_id")
+  id                    String                @id @db.VarChar
+  title                 String                @db.VarChar
+  description           String                @db.VarChar
+  link                  String                @db.VarChar
+  visitors_info_section visitors_info_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "visitors_info_section_nearby_hotels_content_parent_id_fk")
+
+  @@index([order], map: "visitors_info_section_nearby_hotels_content_order_idx")
+  @@index([parent_id], map: "visitors_info_section_nearby_hotels_content_parent_id_idx")
+}
+
+model why_tallinn_section {
+  id                          Int                           @id @default(autoincrement())
+  title                       String                        @default("Why Tallinn") @db.VarChar
+  updated_at                  DateTime?                     @db.Timestamptz(3)
+  created_at                  DateTime?                     @db.Timestamptz(3)
+  why_tallinn_section_reasons why_tallinn_section_reasons[]
+}
+
+model why_tallinn_section_reasons {
+  order               Int                 @map("_order")
+  parent_id           Int                 @map("_parent_id")
+  id                  String              @id @db.VarChar
+  title               String              @db.VarChar
+  text                String              @db.VarChar
+  why_tallinn_section why_tallinn_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "why_tallinn_section_reasons_parent_id_fk")
+
+  @@index([order], map: "why_tallinn_section_reasons_order_idx")
+  @@index([parent_id], map: "why_tallinn_section_reasons_parent_id_idx")
 }

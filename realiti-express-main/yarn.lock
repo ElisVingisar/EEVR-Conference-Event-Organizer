@@ -424,10 +424,17 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
-"@img/sharp-win32-x64@0.33.5":
+"@img/sharp-darwin-arm64@0.33.5":
   version "0.33.5"
-  resolved "https://registry.npmjs.org/@img/sharp-win32-x64/-/sharp-win32-x64-0.33.5.tgz"
-  integrity sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==
+  resolved "https://registry.npmjs.org/@img/sharp-darwin-arm64/-/sharp-darwin-arm64-0.33.5.tgz"
+  integrity sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==
+  optionalDependencies:
+    "@img/sharp-libvips-darwin-arm64" "1.0.4"
+
+"@img/sharp-libvips-darwin-arm64@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/@img/sharp-libvips-darwin-arm64/-/sharp-libvips-darwin-arm64-1.0.4.tgz"
+  integrity sha512-XblONe153h0O2zuFfTAbQYAX2JhYmDHeWikp1LM9Hul9gVPjFY427k6dFEcOL72O01QxQsWi761svJ/ev9xEDg==
 
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"
@@ -733,10 +740,10 @@
   dependencies:
     glob "10.3.10"
 
-"@next/swc-win32-x64-msvc@15.0.3":
+"@next/swc-darwin-arm64@15.0.3":
   version "15.0.3"
-  resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-15.0.3.tgz"
-  integrity sha512-VNAz+HN4OGgvZs6MOoVfnn41kBzT+M+tB+OK4cww6DNyWS6wKaDpaAm/qLeOUbnMh0oVx1+mg0uoYARF69dJyA==
+  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-15.0.3.tgz"
+  integrity sha512-s3Q/NOorCsLYdCKvQlWU+a+GeAd3C8Rb3L1YnetsgwXzhc3UTWrtQpB/3eCjFOdGUj5QmXfRak12uocd1ZiiQw==
 
 "@next/third-parties@^14.2.5":
   version "14.2.18"
@@ -912,6 +919,47 @@
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
+
+"@prisma/client@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-6.0.1.tgz"
+  integrity sha512-60w7kL6bUxz7M6Gs/V+OWMhwy94FshpngVmOY05TmGD0Lhk+Ac0ZgtjlL6Wll9TD4G03t4Sq1wZekNVy+Xdlbg==
+
+"@prisma/debug@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-6.0.1.tgz"
+  integrity sha512-jQylgSOf7ibTVxqBacnAlVGvek6fQxJIYCQOeX2KexsfypNzXjJQSS2o5s+Mjj2Np93iSOQUaw6TvPj8syhG4w==
+
+"@prisma/engines-version@5.23.0-27.5dbef10bdbfb579e07d35cc85fb1518d357cb99e":
+  version "5.23.0-27.5dbef10bdbfb579e07d35cc85fb1518d357cb99e"
+  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-5.23.0-27.5dbef10bdbfb579e07d35cc85fb1518d357cb99e.tgz"
+  integrity sha512-JmIds0Q2/vsOmnuTJYxY4LE+sajqjYKhLtdOT6y4imojqv5d/aeVEfbBGC74t8Be1uSp0OP8lxIj2OqoKbLsfQ==
+
+"@prisma/engines@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-6.0.1.tgz"
+  integrity sha512-4hxzI+YQIR2uuDyVsDooFZGu5AtixbvM2psp+iayDZ4hRrAHo/YwgA17N23UWq7G6gRu18NvuNMb48qjP3DPQw==
+  dependencies:
+    "@prisma/debug" "6.0.1"
+    "@prisma/engines-version" "5.23.0-27.5dbef10bdbfb579e07d35cc85fb1518d357cb99e"
+    "@prisma/fetch-engine" "6.0.1"
+    "@prisma/get-platform" "6.0.1"
+
+"@prisma/fetch-engine@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-6.0.1.tgz"
+  integrity sha512-T36bWFVGeGYYSyYOj9d+O9G3sBC+pAyMC+jc45iSL63/Haq1GrYjQPgPMxrEj9m739taXrupoysRedQ+VyvM/Q==
+  dependencies:
+    "@prisma/debug" "6.0.1"
+    "@prisma/engines-version" "5.23.0-27.5dbef10bdbfb579e07d35cc85fb1518d357cb99e"
+    "@prisma/get-platform" "6.0.1"
+
+"@prisma/get-platform@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-6.0.1.tgz"
+  integrity sha512-zspC9vlxAqx4E6epMPMLLBMED2VD8axDe8sPnquZ8GOsn6tiacWK0oxrGK4UAHYzYUVuMVUApJbdXB2dFpLhvg==
+  dependencies:
+    "@prisma/debug" "6.0.1"
 
 "@radix-ui/primitive@1.1.0":
   version "1.1.0"
@@ -1264,10 +1312,10 @@
   resolved "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-5.2.0.tgz"
   integrity sha512-2ZpEaezx3S0QPtnske175NDaLvUvaVKd4ePHpUN0QF/uV4BBBBRUy5BvQONDym+utbbW0QhSJoiRPnp4FS+4Vg==
 
-"@swc/core-win32-x64-msvc@1.9.2":
+"@swc/core-darwin-arm64@1.9.2":
   version "1.9.2"
-  resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.9.2.tgz"
-  integrity sha512-ik/k+JjRJBFkXARukdU82tSVx0CbExFQoQ78qTO682esbYXzjdB5eLVkoUbwen299pnfr88Kn4kyIqFPTje8Xw==
+  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.9.2.tgz"
+  integrity sha512-nETmsCoY29krTF2PtspEgicb3tqw7Ci5sInTI03EU5zpqYbPjoPH99BVTjj0OsF53jP5MxwnLI5Hm21lUn1d6A==
 
 "@swc/core@^1.6.13":
   version "1.9.2"
@@ -3890,6 +3938,11 @@ fs.realpath@^1.0.0:
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
+fsevents@~2.3.2, fsevents@~2.3.3, fsevents@2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
 function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz"
@@ -6198,6 +6251,15 @@ pretty-bytes@^5.6.0:
   version "5.6.0"
   resolved "https://registry.npmjs.org/pretty-bytes/-/pretty-bytes-5.6.0.tgz"
   integrity sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==
+
+prisma@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/prisma/-/prisma-6.0.1.tgz"
+  integrity sha512-CaMNFHkf+DDq8zq3X/JJsQ4Koy7dyWwwtOKibkT/Am9j/tDxcfbg7+lB1Dzhx18G/+RQCMgjPYB61bhRqteNBQ==
+  dependencies:
+    "@prisma/engines" "6.0.1"
+  optionalDependencies:
+    fsevents "2.3.3"
 
 prismjs@^1.27.0:
   version "1.29.0"

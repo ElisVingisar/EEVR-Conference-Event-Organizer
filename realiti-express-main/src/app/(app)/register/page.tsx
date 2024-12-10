@@ -12,7 +12,7 @@ import { ClipLoader } from "react-spinners";
 
 dotenv.config()
 
-const deadline = new Date('2024-10-30');
+const deadline = new Date('2025-10-30');
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState<{
@@ -246,7 +246,20 @@ const RegisterPage = () => {
 
       const response = await fetch('/api/register', {
         method: 'POST',
-        body: data, // Send form data
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          info: formData.info,
+          talkTitle: formData.talkTitle,
+          arrivalDate: formData.arrivalDate,
+          departureDate: formData.departureDate,
+          hotelAccommodation: formData.hotelAccommodation,
+          dietaryRestrictions: formData.dietaryRestrictions,
+          specialRequests: formData.specialRequests,
+        }),
       });
 
 
