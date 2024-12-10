@@ -9,6 +9,8 @@ import { fileURLToPath } from 'url';
 
 import { Users } from './payload/collections/Users';
 import { Media } from './payload/collections/Media';
+import { Feedback } from './payload/collections/Feedback';
+
 import { Posts } from './payload/collections/Posts';
 import { AboutSection } from './payload/globals/sections/AboutSection';
 import { BuyTicketSection } from './payload/globals/sections/BuyTicketSection';
@@ -41,7 +43,7 @@ export default buildConfig({
         }
       : false,
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Feedback],
   globals: [
     AboutSection,
     BuyTicketSection,

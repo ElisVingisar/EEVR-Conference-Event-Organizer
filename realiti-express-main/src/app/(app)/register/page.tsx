@@ -333,22 +333,6 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/*<div>
-              <label htmlFor="picture" className="block text-realiti-blue2 font-medium">Picture of Yourself:</label>
-              <input
-                type="file"
-                id="picture"
-                name="picture"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden" // Hide the default file input
-              />
-              <Button asChild className="p-6 mt-2 text-lg bg-realiti-blue2 hover:bg-[#ECC47A] text-white hover:text-realiti-blue2 rounded-lg cursor-pointer">
-                <label htmlFor="picture" className="cursor-pointer">Choose Picture</label>
-              </Button>
-            </div>*/}
-            {/*  Modified  version of the "Picture of Yourself" with an information indicator
-            (left the previous one as a comment just in case) */}
             <div>
               <div className="flex items-center gap-2">
                 <label htmlFor="picture" className="block text-realiti-blue2 font-medium">
@@ -455,27 +439,6 @@ const RegisterPage = () => {
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
 
-            {/* Left out those fields but left them as comments just in case*/}
-
-            {/*<div>
-              <label htmlFor="flightInfo" className="block text-realiti-blue2 font-medium">Flight Information:</label>
-              <input type="text"
-                     id="flightInfo"
-                     name="flightInfo"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
-            </div>*/}
-            {/*<div>
-              <label htmlFor="hotelAccommodation" className="block text-realiti-blue2 font-medium">Hotel Accommodation:</label>
-              <input type="text"
-                     id="hotelAccommodation"
-                     name="hotelAccommodation"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
-            </div>*/}
-
             <div>
               <label htmlFor="hotelAccommodation" className="block text-realiti-blue2 font-medium">
                 Hotel Accommodation:
@@ -525,17 +488,6 @@ const RegisterPage = () => {
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
 
-            {/* Left out this field but left it as a comment just in case*/}
-
-            {/*<div>
-              <label htmlFor="specialRequests" className="block text-realiti-blue2 font-medium">Special Requests:</label>
-              <textarea id="specialRequests"
-                        name="specialRequests"
-                        rows={4}
-                        className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                        onChange={handleChange}
-                        style={{borderColor: '#ECC47A', borderWidth: '3px'}}></textarea>
-            </div>*/}
             <div className="flex flex-col space-y-0">
             <div className="flex items-center space-x-4 ">
               <Button type="submit" className="p-6 mt-8 text-lg bg-realiti-blue2 hover:bg-realiti-orange2 hover:text-gray-900">
@@ -556,7 +508,6 @@ const RegisterPage = () => {
               <Button onClick={handleGeneratePost} className="p-6 mt-8 text-lg bg-gray-500 hover:bg-realiti-orange2 hover:text-gray-900">
                 Generate with AI ! 
               </Button>
-              {/*<p className="mt-8">Clicking on this button will generate a social media post for you to share on your accounts!</p>*/}
               {/* Conditionally Render the Success/Error Message */}
               
               {/* Info Button with Tooltip */}

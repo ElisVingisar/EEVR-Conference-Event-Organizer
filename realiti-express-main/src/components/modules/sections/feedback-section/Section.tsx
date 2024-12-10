@@ -13,7 +13,7 @@ export default function FeedbackSection() {
 
     const [errors, setErrors] = useState<{ rating?: string; organization?: string }>({});
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Validate inputs
@@ -26,16 +26,50 @@ export default function FeedbackSection() {
             return; // Stop submission
         }
 
+        // Prepare the form data
+        const formData = {
+        satisfactionRating: rating,
+        organizationRating: organization,
+        futureSpeakers: speaker,
+        additionalComments: comments,
+        };
+
+        try {
+            // Send data to Payload CMS
+            const response = await fetch('http://localhost:3000/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert('Feedback submitted successfully!');
+                // Clear form fields
+                setRating(null);
+                setOrganization(null);
+                setSpeaker('');
+                setComments('');
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.message || 'Failed to submit feedback.'}`);
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            alert('An error occurred. Please try again.');
+        }
+
         // Clear errors and reset form
-        setErrors({});
-        alert('Feedback submitted!');
-        console.log({ rating, speaker, organization, comments });
+        //setErrors({});
+        //alert('Feedback submitted!');
+        //console.log({ rating, speaker, organization, comments });
 
         // Reset fields
-        setRating(null);
-        setOrganization(null);
-        setSpeaker('');
-        setComments('');
+        //setRating(null);
+        //setOrganization(null);
+        //setSpeaker('');
+        //setComments('');
     };
 
     return (
