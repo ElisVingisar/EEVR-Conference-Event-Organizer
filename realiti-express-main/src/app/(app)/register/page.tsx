@@ -81,17 +81,21 @@ const RegisterPage = () => {
 
     const temperature = Math.random() * 0.4 +0.6;  //Random temperature
     console.log(temperature);
+    
     const response = await hf.textGeneration({
         model: "tiiuae/falcon-7b-instruct",  
         inputs: `Question: ${prompt}\nAnswer: `,
         parameters: { temperature},
     });
     const result = response as HuggingFaceResponse;
+
+    //Clean the output of the model from html formatting and unnecessary elements
     let cleanresult = result.generated_text.split("Answer:")[1]?.trim();
     cleanresult = cleanresult.replace(/<\/?[^>]+(>|$)/g, "");
     cleanresult = cleanresult.replace(/User$/, '');
     cleanresult = cleanresult.replace(/#$/, '');
-    setLoading(false);
+
+    setLoading(false); //remove loading screen 
     setGeneratedPost(cleanresult);
     return cleanresult;
   };
@@ -105,7 +109,7 @@ const RegisterPage = () => {
   const handleGeneratePost = async() => {
     setLoading(true);
 
-      // Build the prompt based on form data
+    // Build the prompt based on form data
     const prompt = `You are a social media post generator. Generate a concise, engaging social media post about the ${eventInfo["name"]}. 
     Details: 
     Talk Title: ${formData['talkTitle']}
@@ -214,6 +218,7 @@ const RegisterPage = () => {
     data.append('dietaryRestrictions', formData.dietaryRestrictions);
     data.append('specialRequests', formData.specialRequests);
 
+    
     const arrivalDateISO = new Date(formData.arrivalDate).toISOString();
     const departureDateISO = new Date(formData.departureDate).toISOString();
 
@@ -515,7 +520,7 @@ const RegisterPage = () => {
 
                 {/* Tooltip */}
                 <div className="absolute left-full ml-2 w-48 p-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Clicking this button will generate a caption and photo with our event name for you to share on your accounts!
+                  Clicking this button will generate a caption and photo with our event name for you to share on your accounts! AI can make mistakes, generate a new post or make edits to the text if you are unhappy with the result.
                 </div>
               </div>
 
