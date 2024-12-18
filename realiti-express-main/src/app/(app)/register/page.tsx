@@ -397,22 +397,24 @@ const RegisterPage = () => {
             </div>
 
             <div>
-              <label htmlFor="arrivalDate" className="block text-realiti-blue2 font-medium">Arrival Date:</label>
+              <label htmlFor="arrivalDate" className="block text-realiti-blue2 font-medium">Arrival Date: <span className="text-red-700 font-bold">*</span></label>
               <input type="datetime-local"
                      id="arrivalDate"
                      name="arrivalDate"
                      className="w-full p-2 border border-realiti-blue2 rounded-lg"
                      onChange={handleChange}
+                     required
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
 
             </div>
             <div>
-              <label htmlFor="departureDate" className="block text-realiti-blue2 font-medium">Departure Date:</label>
+              <label htmlFor="departureDate" className="block text-realiti-blue2 font-medium">Departure Date: <span className="text-red-700 font-bold">*</span></label>
               <input type="datetime-local"
                      id="departureDate"
                      name="departureDate"
                      className="w-full p-2 border border-realiti-blue2 rounded-lg"
                      onChange={handleChange}
+                     required
                      style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
 
