@@ -365,30 +365,3 @@ model why_tallinn_section_reasons {
   @@index([order], map: "why_tallinn_section_reasons_order_idx")
   @@index([parent_id], map: "why_tallinn_section_reasons_parent_id_idx")
 }
-
-model Speaker {
-  id        Int      @id @default(autoincrement())
-  name      String
-  bio       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model register {
-  id                 Int      @id @default(autoincrement())
-  name               String
-  email              String   @unique
-  info               String?  // Optional field
-  talkTitle          String?
-  arrivalDate        DateTime
-  departureDate      DateTime
-  hotelAccommodation HotelAccommodation?
-  dietaryRestrictions String?
-  specialRequests    String?
-  createdAt          DateTime @default(now())
-}
-
-enum HotelAccommodation {
-  ownAccommodation
-  needAccommodation
-}
