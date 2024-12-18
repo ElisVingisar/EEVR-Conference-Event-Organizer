@@ -14,6 +14,7 @@ export interface Config {
     users: User;
     media: Media;
     feedback: Feedback;
+    register: Register;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -23,6 +24,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     feedback: FeedbackSelect<false> | FeedbackSelect<true>;
+    register: RegisterSelect<false> | RegisterSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -132,6 +134,24 @@ export interface Feedback {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register".
+ */
+export interface Register {
+  id: number;
+  name: string;
+  email: string;
+  info?: string | null;
+  talkTitle: string;
+  arrivalDate?: string | null;
+  departureDate?: string | null;
+  hotelAccommodation?: ('ownAccommodation' | 'needAccommodation') | null;
+  dietaryRestrictions?: string | null;
+  specialRequests?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -148,6 +168,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'feedback';
         value: number | Feedback;
+      } | null)
+    | ({
+        relationTo: 'register';
+        value: number | Register;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -233,6 +257,23 @@ export interface FeedbackSelect<T extends boolean = true> {
   organizationRating?: T;
   futureSpeakers?: T;
   additionalComments?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "register_select".
+ */
+export interface RegisterSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  info?: T;
+  talkTitle?: T;
+  arrivalDate?: T;
+  departureDate?: T;
+  hotelAccommodation?: T;
+  dietaryRestrictions?: T;
+  specialRequests?: T;
   updatedAt?: T;
   createdAt?: T;
 }

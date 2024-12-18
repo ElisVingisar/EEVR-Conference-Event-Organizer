@@ -181,36 +181,34 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
+    console.log('Form submit triggered');
 
     console.log('Form Data before submission:', formData);
     setSubmissionStatus(null);
 
+
     // Prepare form data for submission
-    const data = new FormData();
-    data.append('name', formData.name);
-    data.append('email', formData.email);
-    data.append('info', formData.info);
-    data.append('talkTitle', formData.talkTitle);
+    const data = {
+      name: formData.name,
+      email: formData.email,
+      info: formData.info,
+      talkTitle: formData.talkTitle,
+      picture: formData.picture,
+      slides: formData.slides,
+      arrivalDate: new Date(formData.arrivalDate).toISOString(),
+      departureDate: new Date(formData.departureDate).toISOString(),
+      hotelAccommodation: formData.hotelAccommodation,
+      dietaryRestrictions: formData.dietaryRestrictions,
+      specialRequests: formData.specialRequests,
+    };
+  
+    // Add files only if they exist
     if (formData.picture) {
-      data.append('picture', formData.picture);
+      data.picture = formData.picture;
     }
     if (formData.slides) {
-      data.append('slides', formData.slides);
+      data.slides = formData.slides;
     }
-    data.append('arrivalDate', formData.arrivalDate);
-    data.append('departureDate', formData.departureDate);
-    data.append('hotelAccommodation', formData.hotelAccommodation);
-    data.append('dietaryRestrictions', formData.dietaryRestrictions);
-    data.append('specialRequests', formData.specialRequests);
-
-    const arrivalDateISO = new Date(formData.arrivalDate).toISOString();
-    const departureDateISO = new Date(formData.departureDate).toISOString();
-
-    const dataToSubmit = {
-      ...formData,
-      arrivalDate: arrivalDateISO,
-      departureDate: departureDateISO,
-    };
 
     if (!formData.slides) {
       const currentDate = new Date();
@@ -222,66 +220,31 @@ const RegisterPage = () => {
     } else {
       setSlidesWarning(null); // Clear the warning if slides are present
     }
-
-    /* ----------to generate ai post through api--------------
-      const modelResponse = await fetch('/api/aimodel', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData )
-
-      })
-
-      const modelText = await modelResponse.json();
-      if (modelText.success){
-        console.log('Model response: ', modelText.response)
-      }else{
-        console.log('Model fail :(')
-      }
-    } */
     
 
     try {
-
-      const response = await fetch('/api/register', {
+      const response = await fetch('http://localhost:3000/api/register', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Ensure the content type is JSON
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          info: formData.info,
-          talkTitle: formData.talkTitle,
-          arrivalDate: formData.arrivalDate,
-          departureDate: formData.departureDate,
-          hotelAccommodation: formData.hotelAccommodation,
-          dietaryRestrictions: formData.dietaryRestrictions,
-          specialRequests: formData.specialRequests,
-        }),
+        body: JSON.stringify(data),
       });
-
-
+  
       if (response.ok) {
-        const responseData = await response.json();  // Now we read the response body
-        if (responseData.success) {
-          setSubmissionStatus('success');
-          console.log('Form submission successful!');
-
-
-        } else {
-          setSubmissionStatus('error');
-          console.error('Form submission failed.');
-        }
+        console.log('Form submitted successfully');
+        setSubmissionStatus('success'); // Update submission status to success
+        // Optionally, clear the form
       } else {
-        setSubmissionStatus('error');
-        console.error('Failed to submit the form:', response.statusText);
+        const errorText = await response.text();
+        console.error('Error submitting form: HTTP', response.status, errorText);
+        setSubmissionStatus('failure'); // Update submission status to failure
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-    }  finally {
-      console.log(`Setting submission status: ${submissionStatus}`);
+      setSubmissionStatus('failure'); // Update submission status to failure in case of network or other errors
+    } finally {
+      console.log('Submission status set:', submissionStatus);
     }
   };
 
@@ -350,7 +313,7 @@ const RegisterPage = () => {
             <div>
               <div className="flex items-center gap-2">
                 <label htmlFor="picture" className="block text-realiti-blue2 font-medium">
-                  Picture of Yourself
+                  Photo of Yourself
                 </label>
 
                 {/* Info Button with Tooltip */}
@@ -512,11 +475,11 @@ const RegisterPage = () => {
               {submissionStatus === 'success' && (
                 <p className="text-green-600 mt-8">Form submission successful!</p>
               )}
-              {submissionStatus === 'error' && (
+              {submissionStatus === 'failure' && (
                 <p className="text-red-600 mt-8">Form submission failed. Please try again.</p>
               )}
             </div>
-            {slidesWarning && <p className="text-yellow-500 mt-4">{slidesWarning}</p>}
+            {slidesWarning && <p className="text-white-500 mt-4">{slidesWarning}</p>}
             
             <div className="flex items-center space-x-4">
               <Button onClick={handleGeneratePost} className="p-6 mt-8 text-lg bg-gray-500 hover:bg-realiti-orange2 hover:text-gray-900">

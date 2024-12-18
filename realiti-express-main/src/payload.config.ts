@@ -24,12 +24,11 @@ import { PartnersSection } from './payload/globals/sections/PartnersSection';
 import { SpeakersSection } from './payload/globals/sections/SpeakersSection';
 import { VisitorInfoSection } from './payload/globals/sections/VisitorsInfoSection';
 import { WhyTallinnSection } from './payload/globals/sections/WhyTallinnSection';
+import Registrations from './payload/collections/Register';
+import Register from './payload/collections/Register';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-
-const testUserEmail = process.env.TEST_EMAIL || '';
-const testUserPassword = process.env.TEST_PASSWORD || '';
 
 
 export default buildConfig({
@@ -44,7 +43,7 @@ export default buildConfig({
         }
       : false,
   },
-  collections: [Users, Media, Feedback],
+  collections: [Users, Media, Feedback, Register],
   globals: [
     AboutSection,
     BuyTicketSection,

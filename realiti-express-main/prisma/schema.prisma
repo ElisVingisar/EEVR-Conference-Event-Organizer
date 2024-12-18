@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model about_section {
@@ -156,8 +156,8 @@ model feedback {
   created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
   payload_locked_documents_rels payload_locked_documents_rels[]
 
-  @@index([created_at], map: "feedback_created_at_1_idx")
-  @@index([updated_at], map: "feedback_updated_at_1_idx")
+  @@index([created_at])
+  @@index([updated_at])
 }
 
 model media {
@@ -167,7 +167,7 @@ model media {
   created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
   url                           String?                         @db.VarChar
   thumbnail_u_r_l               String?                         @db.VarChar
-  filename                      String?                         @unique(map: "media_filename_1_idx") @db.VarChar
+  filename                      String?                         @unique(map: "media_filename_idx") @db.VarChar
   mime_type                     String?                         @db.VarChar
   filesize                      Decimal?                        @db.Decimal
   width                         Decimal?                        @db.Decimal
@@ -178,8 +178,8 @@ model media {
   payload_locked_documents_rels payload_locked_documents_rels[]
   speakers_section_speakers     speakers_section_speakers[]
 
-  @@index([created_at], map: "media_created_at_1_idx")
-  @@index([updated_at], map: "media_updated_at_1_idx")
+  @@index([created_at])
+  @@index([updated_at])
 }
 
 model partners_section {
@@ -200,9 +200,9 @@ model partners_section_partners {
   media            media            @relation(fields: [image_id], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "partners_section_partners_image_id_media_id_fk")
   partners_section partners_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "partners_section_partners_parent_id_fk")
 
-  @@index([image_id], map: "partners_section_partners_image_1_idx")
   @@index([order], map: "partners_section_partners_order_idx")
   @@index([parent_id], map: "partners_section_partners_parent_id_idx")
+  @@index([image_id], map: "partners_section_partners_image_idx")
 }
 
 model payload_locked_documents {
@@ -212,9 +212,9 @@ model payload_locked_documents {
   created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
   payload_locked_documents_rels payload_locked_documents_rels[]
 
-  @@index([created_at], map: "payload_locked_documents_created_at_1_idx")
-  @@index([global_slug], map: "payload_locked_documents_global_slug_1_idx")
-  @@index([updated_at], map: "payload_locked_documents_updated_at_1_idx")
+  @@index([created_at])
+  @@index([global_slug])
+  @@index([updated_at])
 }
 
 model payload_locked_documents_rels {
@@ -230,12 +230,12 @@ model payload_locked_documents_rels {
   payload_locked_documents payload_locked_documents @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_parent_fk")
   users                    users?                   @relation(fields: [users_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payload_locked_documents_rels_users_fk")
 
-  @@index([feedback_id], map: "payload_locked_documents_rels_feedback_id_1_idx")
-  @@index([media_id], map: "payload_locked_documents_rels_media_id_1_idx")
   @@index([order])
   @@index([parent_id], map: "payload_locked_documents_rels_parent_idx")
   @@index([path])
-  @@index([users_id], map: "payload_locked_documents_rels_users_id_1_idx")
+  @@index([feedback_id])
+  @@index([media_id])
+  @@index([users_id])
 }
 
 model payload_migrations {
@@ -245,8 +245,8 @@ model payload_migrations {
   updated_at DateTime @default(now()) @db.Timestamptz(3)
   created_at DateTime @default(now()) @db.Timestamptz(3)
 
-  @@index([created_at], map: "payload_migrations_created_at_1_idx")
-  @@index([updated_at], map: "payload_migrations_updated_at_1_idx")
+  @@index([created_at])
+  @@index([updated_at])
 }
 
 model payload_preferences {
@@ -257,9 +257,9 @@ model payload_preferences {
   created_at               DateTime                   @default(now()) @db.Timestamptz(3)
   payload_preferences_rels payload_preferences_rels[]
 
-  @@index([created_at], map: "payload_preferences_created_at_1_idx")
-  @@index([key], map: "payload_preferences_key_1_idx")
-  @@index([updated_at], map: "payload_preferences_updated_at_1_idx")
+  @@index([created_at])
+  @@index([key])
+  @@index([updated_at])
 }
 
 model payload_preferences_rels {
@@ -274,7 +274,7 @@ model payload_preferences_rels {
   @@index([order])
   @@index([parent_id], map: "payload_preferences_rels_parent_idx")
   @@index([path])
-  @@index([users_id], map: "payload_preferences_rels_users_id_1_idx")
+  @@index([users_id])
 }
 
 model speakers_section {
@@ -299,16 +299,16 @@ model speakers_section_speakers {
   media            media?           @relation(fields: [image_id], references: [id], onUpdate: NoAction, map: "speakers_section_speakers_image_id_media_id_fk")
   speakers_section speakers_section @relation(fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "speakers_section_speakers_parent_id_fk")
 
-  @@index([image_id], map: "speakers_section_speakers_image_1_idx")
   @@index([order], map: "speakers_section_speakers_order_idx")
   @@index([parent_id], map: "speakers_section_speakers_parent_id_idx")
+  @@index([image_id], map: "speakers_section_speakers_image_idx")
 }
 
 model users {
   id                            Int                             @id @default(autoincrement())
   updated_at                    DateTime                        @default(now()) @db.Timestamptz(3)
   created_at                    DateTime                        @default(now()) @db.Timestamptz(3)
-  email                         String                          @unique(map: "users_email_1_idx") @db.VarChar
+  email                         String                          @unique(map: "users_email_idx") @db.VarChar
   reset_password_token          String?                         @db.VarChar
   reset_password_expiration     DateTime?                       @db.Timestamptz(3)
   salt                          String?                         @db.VarChar
@@ -318,8 +318,8 @@ model users {
   payload_locked_documents_rels payload_locked_documents_rels[]
   payload_preferences_rels      payload_preferences_rels[]
 
-  @@index([created_at], map: "users_created_at_1_idx")
-  @@index([updated_at], map: "users_updated_at_1_idx")
+  @@index([created_at])
+  @@index([updated_at])
 }
 
 model visitors_info_section {
@@ -364,4 +364,31 @@ model why_tallinn_section_reasons {
 
   @@index([order], map: "why_tallinn_section_reasons_order_idx")
   @@index([parent_id], map: "why_tallinn_section_reasons_parent_id_idx")
+}
+
+model Speaker {
+  id        Int      @id @default(autoincrement())
+  name      String
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model register {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  email              String   @unique
+  info               String?  // Optional field
+  talkTitle          String?
+  arrivalDate        DateTime
+  departureDate      DateTime
+  hotelAccommodation HotelAccommodation?
+  dietaryRestrictions String?
+  specialRequests    String?
+  createdAt          DateTime @default(now())
+}
+
+enum HotelAccommodation {
+  ownAccommodation
+  needAccommodation
 }
