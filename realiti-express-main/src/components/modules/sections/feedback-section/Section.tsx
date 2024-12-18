@@ -83,7 +83,7 @@ export default function FeedbackSection() {
 
                 {/* Satisfaction Rating */}
                 <div className="mb-8">
-                    <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.rating}</label>
+                    <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.rating}<span className="text-red-700 font-bold">*</span></label>
                     <RatingInput value={rating || 0} onChange={setRating} starSize={40} />
                     {errors.rating && (
                         <p className="text-red-500 text-sm mt-2">{errors.rating}</p>
@@ -104,7 +104,7 @@ export default function FeedbackSection() {
 
                 {/* Event Organization Rating */}
                 <div className="mb-8">
-                    <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.organization}</label>
+                    <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.organization} <span className="text-red-700 font-bold">*</span></label>
                     <RatingInput value={organization || 0} onChange={setOrganization} starSize={40} />
                     {errors.organization && (
                         <p className="text-red-500 text-sm mt-2">{errors.organization}</p>
