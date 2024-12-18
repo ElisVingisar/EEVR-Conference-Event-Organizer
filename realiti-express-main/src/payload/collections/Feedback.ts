@@ -10,6 +10,10 @@ export const Feedback: CollectionConfig = {
         defaultColumns: ['satisfactionRating', 'organizationRating', 'futureSpeakers', 'additionalComments', 'createdAt'],
         useAsTitle: 'satisfactionRating',
     },
+    access: {
+        create: () => true, // Allow anyone to create feedback
+        read: () => true,   // Allow anyone to read feedback (optional)
+      },
     fields: [
         {
             name: 'satisfactionRating',
