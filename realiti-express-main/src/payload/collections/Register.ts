@@ -1,29 +1,4 @@
 import { CollectionConfig } from 'payload';
-import { Global } from 'payload/types';
-
-const addSpeakerToGlobal = async (speakerData) => {
-  // This function would update the Speakers Section with new speaker data
-  const speakersSection = await payload.findGlobal({
-    slug: 'speakers-section'
-  });
-  console.log('Current Speakers Section:', speakersSection);
-
-  const updatedSpeakers = [
-    ...speakersSection.speakers,
-    {
-      name: speakerData.name,
-      email: speakerData.email,
-      talkTitle: speakerData.talkTitle,
-    }
-  ];
-
-  await payload.updateGlobal({
-    slug: 'speakers-section',
-    data: {
-      speakers: updatedSpeakers
-    }
-  });
-};
 
 const Register: CollectionConfig = {
   slug: 'register',
