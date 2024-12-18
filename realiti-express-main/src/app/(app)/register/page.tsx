@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { HfInference } from '@huggingface/inference';
 import * as dotenv from 'dotenv';
 import { ClipLoader } from "react-spinners";
@@ -13,6 +12,13 @@ import { ClipLoader } from "react-spinners";
 dotenv.config()
 
 const deadline = new Date('2025-10-30');
+
+const eventInfo = {
+  "name": "Baltic Virtual Reality Event of 2025",
+  "location": "Tallinn",
+  "dates" : "2025-11-30",
+  "hashtag" : "#estonianxr"  
+}
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState<{
@@ -47,6 +53,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [generatedImageURL, setGeneratedImageURL] = useState<string | null>(null);
 
+  const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY);  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -67,20 +74,28 @@ const RegisterPage = () => {
   };
 
   const postGenerator = async (prompt: string) => {
-    const hf = new HfInference(process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY);   
+    
     interface HuggingFaceResponse {
         generated_text: string;
     }
 
     const temperature = Math.random() * 0.4 +0.6;  //Random temperature
+    console.log(temperature);
+    
     const response = await hf.textGeneration({
         model: "tiiuae/falcon-7b-instruct",  
-        inputs: prompt,
-        parameters: { temperature },
+        inputs: `Question: ${prompt}\nAnswer: `,
+        parameters: { temperature},
     });
     const result = response as HuggingFaceResponse;
-    const cleanresult = result.generated_text.slice(prompt.length).trim()
-    setLoading(false);
+
+    //Clean the output of the model from html formatting and unnecessary elements
+    let cleanresult = result.generated_text.split("Answer:")[1]?.trim();
+    cleanresult = cleanresult.replace(/<\/?[^>]+(>|$)/g, "");
+    cleanresult = cleanresult.replace(/User$/, '');
+    cleanresult = cleanresult.replace(/#$/, '');
+
+    setLoading(false); //remove loading screen 
     setGeneratedPost(cleanresult);
     return cleanresult;
   };
@@ -93,23 +108,23 @@ const RegisterPage = () => {
 
   const handleGeneratePost = async() => {
     setLoading(true);
-    const eventInfo = {
-      "name": "Baltic Virtual Reality Event of 2025",
-      "dates" : "2025-11-30",
-      "hashtag" : "#estonianxr"  
-    }
 
-
-      // Build the prompt based on form data
-    const prompt = `Act as a social media post generator. Generate a concise, engaging social media post about the ${eventInfo["name"]}. Include: 
+    // Build the prompt based on form data
+    const prompt = `You are a social media post generator. Generate a concise, engaging social media post about the ${eventInfo["name"]}. 
+    Details: 
     Talk Title: ${formData['talkTitle']}
+    Event location: ${eventInfo["location"]}
     Event dates: ${eventInfo["dates"]}
     Event hashtag: ${eventInfo["hashtag"]}
     Speaker Info: ${formData['info']}
-    Use an engaging tone for a professional audience, written from the perspective of the speaker. 
-    Ensure the event hashtag is included at the end, do not use any other hashtags. Mention the talk title clearly.
-    Avoid links, names of people, quotation marks, or any formatting.
-    Respond only with the generated post text, and nothing else. Do not make incomplete sentences.
+    Requirements: 
+    1. Write a single short social media post in one paragraph in an engaging tone suitable for a professional audience, from the perspective of the speaker.
+    2. Start directly with the content — do not include introductory phrases or lines unrelated to the topic.
+    3. Clearly mention the talk title.
+    4. Use *only* the specified event hashtag. Do *not* generate additional hashtags.
+    5. Avoid links, names of people, quotation marks, quotes, quotation marks, headings and any special formatting.
+    6. Do not mention the event's cost.
+    Respond with exactly one concise, complete and plain-text post with no additional words, tags, or labels. 
     `;
 
     
@@ -220,7 +235,6 @@ const RegisterPage = () => {
     } else {
       setSlidesWarning(null); // Clear the warning if slides are present
     }
-    
 
     try {
       const response = await fetch('http://localhost:3000/api/register', {
@@ -451,20 +465,20 @@ const RegisterPage = () => {
             <div>
               <label htmlFor="dietaryRestrictions" className="block text-realiti-blue2 font-medium">Dietary Restrictions:</label>
               <input type="text"
-                     id="dietaryRestrictions"
-                     name="dietaryRestrictions"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
+                    id="dietaryRestrictions"
+                    name="dietaryRestrictions"
+                    className="w-full p-2 border border-realiti-blue2 rounded-lg"
+                    onChange={handleChange}
+                    style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
             <div>
               <label htmlFor="specialRequests" className="block text-realiti-blue2 font-medium">Special Needs:</label>
               <input type="text"
-                     id="specialRequests"
-                     name="specialRequests"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
+                    id="specialRequests"
+                    name="specialRequests"
+                    className="w-full p-2 border border-realiti-blue2 rounded-lg"
+                    onChange={handleChange}
+                    style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
 
             <div className="flex flex-col space-y-0">
@@ -501,7 +515,7 @@ const RegisterPage = () => {
 
                 {/* Tooltip */}
                 <div className="absolute left-full ml-2 w-48 p-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Clicking this button will generate a caption and photo with our event name for you to share on your accounts!
+                  Clicking this button will generate a caption and photo with our event name for you to share on your accounts! AI can make mistakes, generate a new post or make edits to the text if you are unhappy with the result.
                 </div>
               </div>
 
