@@ -65,3 +65,61 @@ describe('Feedback Form', () => {
 
 
 })
+
+
+describe('Buying tickets', () => {
+    beforeEach(() => {
+        cy.visit('http://localhost:3000/#tickets'); 
+    });
+
+    it('should not allow buying tickets when no tickets are selected', () => {
+    
+        const alertShown = cy.stub().as("alertShown");
+
+        cy.on ('window:alert', alertShown);
+
+        cy.contains('Buy Tickets').click();
+
+        // Check for error message
+        cy.get("@alertShown").should("have.been.calledOnceWith", 'Please select at least one ticket.');
+    
+    });
+
+    it('should contain four different types of tickets', () => {
+        cy.get('div[id="ticket"]').should('have.length', 4);
+        cy.get('div[id="ticket"]').eq(0).contains("Regular Realiti");
+        cy.get('div[id="ticket"]').eq(1).contains("Student Realiti");
+        cy.get('div[id="ticket"]').eq(2).contains("VIP Realiti");
+        cy.get('div[id="ticket"]').eq(3).contains("Team Realiti");
+    
+    });
+
+    it('should update ticket quanitity when "+" or "-" is clicked', () => {
+        cy.get('div[id="ticket"]').eq(0).find('div[id="quantity"]').should('have.text', '0');
+        // Click "+" button to increase quantity
+        cy.get('div[id="ticket').eq(0).find('button[id="increase-quantity"]').click();
+        cy.get('div[id="ticket').eq(0).find('div[id="quantity"]').should('have.text', '1');
+
+        // Click "-" button to decrease quantity
+        cy.get('div[id="ticket').eq(0).find('button[id="decrease-quantity"]').click();
+        cy.get('div[id="ticket').eq(0).find('div[id="quantity"]').should('have.text', '0');
+
+        // Clicking the "-" button should not decrease quantity below zero
+        cy.get('div[id="ticket').eq(0).find('button[id="decrease-quantity"]').click();
+        cy.get('div[id="ticket').eq(0).find('div[id="quantity"]').should('have.text', '0');
+    
+    });
+
+    it('should be able to buy tickets when tickets are selected', () => {
+        cy.get('div[id="ticket"]').eq(0).find('div[id="quantity"]').should('have.text', '0');
+        // Click "+" button to increase quantity
+        cy.get('div[id="ticket').eq(1).find('button[id="increase-quantity"]').click();
+        cy.get('div[id="ticket').eq(1).find('div[id="quantity"]').should('have.text', '1');
+        
+        cy.contains('Buy Tickets').click();
+
+        cy.url().should('not.include', 'localhost');
+
+    });
+    
+})

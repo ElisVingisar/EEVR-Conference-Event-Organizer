@@ -291,6 +291,7 @@ export function TicketList({ tickets }: { tickets: { ticketOptions: TicketOption
           <div
             key={tier.title}
             className="h-full flex flex-col items-stretch justify-stretch border-gray-200 divide-gray-200"
+            id="ticket"
           >
             <div className="p-2 border rounded-xl bg-white">
               <div
@@ -335,13 +336,15 @@ export function TicketList({ tickets }: { tickets: { ticketOptions: TicketOption
                 </div>
                 <div className="flex items-center mt-4">
                   <button
+                    id="decrease-quantity"
                     className="px-4 py-2 bg-gray-300 text-black rounded-l"
                     onClick={() => updateQuantity(tier.title, -1)}
                   >
                     -
                   </button>
-                  <div className="px-4 py-2 border">{quantities[tier.title] || 0}</div>
+                  <div id="quantity" className="px-4 py-2 border">{quantities[tier.title] || 0}</div>
                   <button
+                    id="increase-quantity"
                     className="px-4 py-2 bg-gray-300 text-black rounded-r"
                     onClick={() => updateQuantity(tier.title, 1)}
                   >
