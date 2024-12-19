@@ -95,6 +95,7 @@ export default function FeedbackSection() {
                     <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.speaker}</label>
                     <input
                         type="text"
+                        name="speakerRequest"
                         value={speaker}
                         onChange={(e) => setSpeaker(e.target.value)}
                         placeholder="Enter future speaker requests"
@@ -116,6 +117,7 @@ export default function FeedbackSection() {
                     <label className="block mb-4 text-xl font-semibold text-reliti-dark-blue">{formLabels.comments}</label>
                     <textarea
                         value={comments}
+                        name="comments"
                         onChange={(e) => setComments(e.target.value)}
                         placeholder="Add your comments or suggestions"
                         rows={4}
