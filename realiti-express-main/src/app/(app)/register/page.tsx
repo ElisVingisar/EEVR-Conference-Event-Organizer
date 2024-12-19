@@ -30,7 +30,7 @@ const RegisterPage = () => {
     slides: File | null;
     arrivalDate: string;
     departureDate: string;
-    hotelAccommodation: string;
+    hotelAccommodation: string | null;
     dietaryRestrictions: string;
     specialRequests: string;
   }>({
@@ -42,7 +42,7 @@ const RegisterPage = () => {
     slides: null,
     arrivalDate: '',
     departureDate: '',
-    hotelAccommodation: '', // Initial state
+    hotelAccommodation: null, // Initial state
     dietaryRestrictions: '',
     specialRequests: '',
   });
@@ -413,23 +413,23 @@ const RegisterPage = () => {
             <div>
               <label htmlFor="arrivalDate" className="block text-realiti-blue2 font-medium">Arrival Date: <span className="text-red-700 font-bold">*</span></label>
               <input type="datetime-local"
-                     id="arrivalDate"
-                     name="arrivalDate"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     required
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
+                    id="arrivalDate"
+                    name="arrivalDate"
+                    className="w-full p-2 border border-realiti-blue2 rounded-lg"
+                    onChange={handleChange}
+                    required
+                    style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
 
             </div>
             <div>
               <label htmlFor="departureDate" className="block text-realiti-blue2 font-medium">Departure Date: <span className="text-red-700 font-bold">*</span></label>
               <input type="datetime-local"
-                     id="departureDate"
-                     name="departureDate"
-                     className="w-full p-2 border border-realiti-blue2 rounded-lg"
-                     onChange={handleChange}
-                     required
-                     style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
+                    id="departureDate"
+                    name="departureDate"
+                    className="w-full p-2 border border-realiti-blue2 rounded-lg"
+                    onChange={handleChange}
+                    required
+                    style={{borderColor: '#ECC47A', borderWidth: '3px'}}/>
             </div>
 
             <div>
@@ -532,7 +532,7 @@ const RegisterPage = () => {
                 <div className="max-w-3xl mx-auto">
                   <textarea
                     value={generatedPost}
-                    readOnly
+                    name="generatedText"
                     className="w-full p-2 border border-gray-300 rounded-md mt-4 mb-4 resize-none"
                     rows={6}
                   />
