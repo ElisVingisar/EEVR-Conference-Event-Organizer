@@ -81,9 +81,11 @@ jobs:
         run: |
           echo "REACT_APP_API_URL=$API_URL" >> realiti-express-main/.env
           echo "BLOB_READ_WRITE_TOKEN=$BLOB_READ_WRITE_TOKEN" >> realiti-express-main/.env
+          echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> realiti-express-main/.env
         env:
           API_URL: ${{ secrets.API_URL }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.VERCEL_BLOB_READ_WRITE_TOKEN }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
 
       - name: Build with Next.js
