@@ -79,7 +79,7 @@ jobs:
 
       # Run Cypress tests
       - name: Run Cypress tests
-        run: npx cypress run --headless --browser chrome --no-sandbox
+        run: npx cypress run --headless --browser chrome
         working-directory: ./realiti-express-main/cypress
 
       - name: Build with Next.js
