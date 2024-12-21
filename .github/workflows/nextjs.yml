@@ -74,7 +74,7 @@ jobs:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
       - name: Install Cypress
-        run: npm install cypress --save-dev
+        run: npm install cypress --legacy-peer-deps --save-dev
         working-directory: ./realiti-express-main
 
       # Run Cypress tests
