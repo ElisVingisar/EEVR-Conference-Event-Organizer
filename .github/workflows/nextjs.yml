@@ -77,6 +77,7 @@ jobs:
         run: |
           nohup npm run dev &  # or use yarn dev if that's your package manager
           sleep 10  # Allow the server a few seconds to start
+        working-directory: ./realiti-express-main
       
       - name: Install Cypress
         run: npm install cypress --legacy-peer-deps --save-dev
