@@ -134,7 +134,7 @@ describe('Register Page', () => {
     cy.get('p').contains('Form submission failed. Please try again.').should('be.visible');
   });
 
-  it.only('should generate ai social media post', () => {
+  it('should generate ai social media post', () => {
     const uniqueEmail = generateUniqueEmail();
   
     // Fill out the form
