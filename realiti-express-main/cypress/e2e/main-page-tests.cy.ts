@@ -68,12 +68,9 @@ describe('Feedback Form', () => {
 
 
 describe('Buying tickets', () => {
-    beforeEach(() => {
-        cy.visit('http://localhost:3000/#tickets'); 
-    });
 
     it('should not allow buying tickets when no tickets are selected', () => {
-    
+        cy.visit('http://localhost:3000/#tickets'); 
         const alertShown = cy.stub().as("alertShown");
 
         cy.on ('window:alert', alertShown);
@@ -86,6 +83,7 @@ describe('Buying tickets', () => {
     });
 
     it('should contain four different types of tickets', () => {
+        cy.visit('http://localhost:3000'); 
         cy.get('div[id="ticket"]').should('have.length', 4);
         cy.get('div[id="ticket"]').eq(0).contains("Regular Realiti");
         cy.get('div[id="ticket"]').eq(1).contains("Student Realiti");
@@ -95,6 +93,7 @@ describe('Buying tickets', () => {
     });
 
     it('should update ticket quanitity when "+" or "-" is clicked', () => {
+        cy.visit('http://localhost:3000/#tickets'); 
         cy.get('div[id="ticket"]').eq(0).find('div[id="quantity"]').should('have.text', '0');
         // Click "+" button to increase quantity
         cy.get('div[id="ticket').eq(0).find('button[id="increase-quantity"]').click();
@@ -111,6 +110,7 @@ describe('Buying tickets', () => {
     });
 
     it('should be able to buy tickets when tickets are selected', () => {
+        cy.visit('http://localhost:3000'); 
         cy.get('div[id="ticket"]').eq(0).find('div[id="quantity"]').should('have.text', '0');
         // Click "+" button to increase quantity
         cy.get('div[id="ticket').eq(1).find('button[id="increase-quantity"]').click();
