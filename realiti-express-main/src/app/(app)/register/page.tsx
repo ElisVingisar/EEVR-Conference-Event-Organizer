@@ -189,6 +189,7 @@ const RegisterPage = () => {
       };
     };
     
+    
 
 
 
@@ -497,7 +498,7 @@ const RegisterPage = () => {
             </div>
             {slidesWarning && <p className="text-white-500 mt-4">{slidesWarning}</p>}
             
-            <div className="flex items-center space-x-4">
+            {submissionStatus === "success" && (<div className="flex items-center space-x-4">
               <Button onClick={handleGeneratePost} className="p-6 mt-8 text-lg bg-gray-500 hover:bg-realiti-orange2 hover:text-gray-900">
                 Generate with AI ! 
               </Button>
@@ -518,10 +519,13 @@ const RegisterPage = () => {
                   Clicking this button will generate a caption and photo with our event name for you to share on your accounts! AI can make mistakes, generate a new post or make edits to the text if you are unhappy with the result.
                 </div>
               </div>
+              </div>
+
+            )}
 
             </div>
 
-            </div>
+            
             {loading && (
             <div className="mt-4 text-center">
               <ClipLoader color="#123456" loading={loading} size={50} />

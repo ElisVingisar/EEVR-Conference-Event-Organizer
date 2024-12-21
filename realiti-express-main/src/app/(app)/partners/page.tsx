@@ -211,11 +211,11 @@ const PartnersPage = () => {
         </h2>
         <form className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-realiti-blue2 font-medium">Name:</label>
+            <label htmlFor="name" className="block text-realiti-blue2 font-medium">Name:<span className="text-red-700 font-bold">*</span></label>
             <input type="text" id="name" name="name" required className="w-full p-2 border border-realiti-blue2 rounded-lg" />
           </div>
           <div>
-            <label htmlFor="email" className="block text-realiti-blue2 font-medium">Email:</label>
+            <label htmlFor="email" className="block text-realiti-blue2 font-medium">Email:<span className="text-red-700 font-bold">*</span></label>
             <input type="email" id="email" name="email" required className="w-full p-2 border border-realiti-blue2 rounded-lg" />
           </div>
 

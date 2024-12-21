@@ -134,7 +134,7 @@ describe('Register Page', () => {
     cy.get('p').contains('Form submission failed. Please try again.').should('be.visible');
   });
 
-  it('should generate ai social media post', () => {
+  it.only('should generate ai social media post', () => {
     const uniqueEmail = generateUniqueEmail();
   
     // Fill out the form
@@ -147,6 +147,9 @@ describe('Register Page', () => {
     cy.get('input[name="arrivalDate"]').type('2025-10-23T07:39'); 
     cy.get('input[name="departureDate"]').type('2025-10-24T07:39');
 
+    // Submit the form
+    cy.get('button[type="submit"]').click();
+    cy.wait(5000);
   
     cy.contains('Generate with AI !').click(); // Generate AI social media post
     cy.wait(5000);
