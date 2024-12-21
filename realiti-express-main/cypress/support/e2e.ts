@@ -16,14 +16,19 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+// Global Setup - run before each test
 beforeEach(() => {
-  // Setup for every test
+  // Add any global setup here, for example, logging in before each test.
+  // Example: Cypress commands, visiting a common URL, etc.
+  // Cypress visit or custom commands can go here.
+  cy.visit('/')
 });
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Error Handling - prevents Cypress from failing tests on uncaught exceptions
 Cypress.on('uncaught:exception', (err, runnable) => {
-    // returning false here prevents Cypress from
-    // failing the test
-    return false
-  })
+  // You can log the error if you want to debug.
+  console.error('Uncaught exception:', err);
+  
+  // Returning false prevents Cypress from failing the test
+  return false;
+});
