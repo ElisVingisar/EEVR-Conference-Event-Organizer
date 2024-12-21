@@ -73,6 +73,11 @@ jobs:
           BLOB_READ_WRITE_TOKEN: ${{ secrets.VERCEL_BLOB_READ_WRITE_TOKEN }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
+      - name: Start application server
+        run: |
+          nohup npm run dev &  # or use yarn dev if that's your package manager
+          sleep 10  # Allow the server a few seconds to start
+      
       - name: Install Cypress
         run: npm install cypress --legacy-peer-deps --save-dev
         working-directory: ./realiti-express-main
